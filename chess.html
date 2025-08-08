@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matin481 - بازی شطرنج</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="site icon" href="https://s6.uupload.ir/files/avatar_4eom.jpeg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazir', Tahoma, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #chessboard-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        #chessboard {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            width: 80vw;
+            max-width: 600px;
+            height: 80vw;
+            max-height: 600px;
+            border: 4px solid #333;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .square {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .light {
+            background-color: #f0d9b5;
+        }
+        .dark {
+            background-color: #b58863;
+        }
+
+        .square.highlight {
+            background-color: #ffc400;
+        }
+
+        .square.highlight-move {
+            background-color: #4CAF50;
+        }
+        
+        #game-info {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            text-shadow: 0 0 10px #000;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+        }
+
+        #game-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        #game-info p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        #game-info button {
+            padding: 10px 20px;
+            background: #ff1500;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        #game-info button:hover {
+            background: #e00;
+        }
+
+        .piece {
+            font-size: 50px;
+            line-height: 1;
+            text-shadow: 2px 2px 4px #000;
+            transition: transform 0.2s ease-in-out;
+            cursor: grab;
+        }
+        .piece:active {
+            cursor: grabbing;
+        }
+        .white-piece {
+            color: #fff;
+        }
+        .black-piece {
+            color: #000;
+        }
+
+        #back-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 11;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+        #back-button:hover {
+            transform: scale(1.1);
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="chessboard-container">
+        <a href="index.html" id="back-button" title="بازگشت به صفحه اصلی">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div id="chessboard"></div>
+        <div id="game-info">
+            <h2 id="game-title">شطرنج</h2>
+            <p id="game-message">با Bot بازی کنید</p>
+            <button onclick="startGame()">شروع بازی</button>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script>
+        const chessboard = document.getElementById('chessboard');
+        const gameInfo = document.getElementById('game-info');
+        const gameTitle = document.getElementById('game-title');
+        const gameMessage = document.getElementById('game-message');
+        const chess = new Chess();
+        const boardSize = 8;
+        const pieceImages = {
+            'p': '♟', 'n': '♞', 'b': '♝', 'r': '♜', 'q': '♛', 'k': '♚',
+            'P': '♙', 'N': '♘', 'B': '♗', 'R': '♖', 'Q': '♕', 'K': '♔'
+        };
+        let selectedSquare = null;
+
+        function createBoard() {
+            chessboard.innerHTML = '';
+            for (let i = 0; i < boardSize * boardSize; i++) {
+                const square = document.createElement('div');
+                square.classList.add('square');
+                const row = Math.floor(i / boardSize);
+                const col = i % boardSize;
+
+                if ((row + col) % 2 === 0) {
+                    square.classList.add('light');
+                } else {
+                    square.classList.add('dark');
+                }
+                
+                square.dataset.square = String.fromCharCode('a'.charCodeAt(0) + col) + (8 - row);
+                square.addEventListener('click', onSquareClick);
+                chessboard.appendChild(square);
+            }
+        }
+
+        function drawPieces() {
+            const squares = document.querySelectorAll('.square');
+            squares.forEach(square => {
+                square.innerHTML = '';
+                const piece = chess.get(square.dataset.square);
+                if (piece) {
+                    const pieceElement = document.createElement('span');
+                    pieceElement.classList.add('piece');
+                    pieceElement.classList.add(piece.color === 'w' ? 'white-piece' : 'black-piece');
+                    pieceElement.textContent = pieceImages[piece.type.toUpperCase()];
+                    square.appendChild(pieceElement);
+                }
+            });
+        }
+
+        function onSquareClick(event) {
+            const square = event.currentTarget;
+            const squareId = square.dataset.square;
+
+            if (selectedSquare) {
+                const moves = chess.moves({ square: selectedSquare, verbose: true });
+                const isValidMove = moves.some(move => move.to === squareId);
+                
+                if (isValidMove) {
+                    chess.move({ from: selectedSquare, to: squareId });
+                    drawPieces();
+                    clearHighlights();
+                    checkGameStatus();
+                    if (!chess.game_over()) {
+                        setTimeout(aiMove, 500);
+                    }
+                } else {
+                    clearHighlights();
+                }
+                selectedSquare = null;
+            } else {
+                const piece = chess.get(squareId);
+                if (piece && piece.color === 'w' && chess.turn() === 'w') {
+                    selectedSquare = squareId;
+                    highlightMoves(squareId);
+                }
+            }
+        }
+
+        function highlightMoves(square) {
+            clearHighlights();
+            const moves = chess.moves({ square: square, verbose: true });
+            
+            moves.forEach(move => {
+                const targetSquare = document.querySelector(`[data-square="${move.to}"]`);
+                if (targetSquare) {
+                    targetSquare.classList.add('highlight-move');
+                }
+            });
+            document.querySelector(`[data-square="${square}"]`).classList.add('highlight');
+        }
+
+        function clearHighlights() {
+            document.querySelectorAll('.square').forEach(square => {
+                square.classList.remove('highlight', 'highlight-move');
+            });
+        }
+
+        function aiMove() {
+            const possibleMoves = chess.moves({ verbose: true });
+            if (possibleMoves.length === 0) return;
+            
+            const randomMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+            chess.move(randomMove);
+            drawPieces();
+            checkGameStatus();
+        }
+
+        function checkGameStatus() {
+            if (chess.game_over()) {
+                let message;
+                if (chess.in_checkmate()) {
+                    message = chess.turn() === 'w' ? 'شما باختید!' : 'شما برنده شدید!';
+                } else if (chess.in_draw()) {
+                    message = 'بازی مساوی شد.';
+                } else {
+                    message = 'بازی به پایان رسید.';
+                }
+                showGameMessage(message);
+            }
+        }
+
+        function showGameMessage(message) {
+            gameInfo.style.display = 'flex';
+            gameTitle.textContent = message;
+            gameMessage.textContent = '';
+            gameInfo.querySelector('button').textContent = 'بازی مجدد';
+        }
+
+        function startGame() {
+            gameInfo.style.display = 'none';
+            chess.reset();
+            createBoard();
+            drawPieces();
+        }
+        
+        // Initial setup
+        createBoard();
+        drawPieces();
+    </script>
+</body>
+</html>
