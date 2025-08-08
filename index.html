@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-     <meta name="description" content="Matin481-اطلاعات متین481 و  Matin481">
-<meta name="google-site-verification" content="T5WGkoOd_frFu33ckfETbvEN2eycHRUDynb21nK8fz0" />
+    <meta name="description" content="اطلاعات Matin481, نحوه تماس و پروفایل شخصی. Matin481 یک طراح گرافیک، توسعه‌دهنده، و برنامه‌نویس با تجربه در حوزه فناوری است.">
+    <meta name="google-site-verification" content="T5WGkoOd_frFu33ckfETbvEN2eycHRUDynb21nK8fz0" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matin481</title>
+    <title>Matin481 - پروفایل و اطلاعات تماس</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="site icon" href="https://s6.uupload.ir/files/avatar_4eom.jpeg">
     <style>
@@ -27,7 +27,6 @@
             align-items: center;
         }
 
-        
         #particles-canvas {
             position: fixed;
             top: 0;
@@ -95,7 +94,6 @@
             position: relative;
         }
 
-
         @keyframes glow {
             from {
                 text-shadow: 0 0 10px #ff1500, 0 0 20px #ff0000, 0 0 30px #ff0000;
@@ -122,46 +120,56 @@
             align-items: center;
             overflow: hidden;
             gap: 10px;
-             position: relative;
+            position: relative;
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .contact-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, #ff6f4d, #ff0066, #ff6f4d);
-  transition: left 0.6s ease;
-  z-index: 0;
-}
-.contact-item:hover::before {
-  left: 0;
-}
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff6f4d, #ff0066, #ff6f4d);
+            transition: left 0.6s ease;
+            z-index: 0;
+        }
+        .contact-item:hover::before {
+            left: 0;
+        }
 
         .contact-item:hover {
-             
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(255, 0, 102, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 0, 102, 0.5);
         }
-.contact-item i,
-.contact-item span {
-  position: relative;
-  z-index: 1;
-}
+        .contact-item i,
+        .contact-item span {
+            position: relative;
+            z-index: 1;
+        }
         .contact-item i {
             font-size: 1.5rem;
             color: #15ff00;
         }
-
+        .contact-item i.shaking-icon {
+            animation: shake 0.5s infinite;
+        }
+        
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            20% { transform: rotate(5deg); }
+            40% { transform: rotate(-5deg); }
+            60% { transform: rotate(5deg); }
+            80% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+        
         .contact-item span {
             font-size: 1.1rem;
             color: #fff;
         }
 
-        
         .glitch {
             position: relative;
             display: inline-block;
@@ -209,13 +217,31 @@
                 transform: translate(2px, 1px);
             }
         }
+        
+        .game-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgb(255, 255, 255);
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
 
-     
+        .game-toggle:hover {
+            background: rgba(255, 255, 255, 0.982);
+            transform: scale(1.1);
+        }
+
         .theme-toggle {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgb(255, 255, 255);
             border: none;
             padding: 10px;
             border-radius: 50%;
@@ -225,60 +251,29 @@
         }
 
         .theme-toggle:hover {
-            background: rgba(0, 162, 255, 0.2);
+            background: rgb(255, 255, 255);
             transform: rotate(180deg);
         }
 
-
-        @keyframes scan {
-            0% {
-                top: 0;
-            }
-            100% {
-                top: 100%;
-            }
-        }
-
-      
-        @media (max-width: 768px) {
-            .name {
-                font-size: 2.5rem;
-            }
-            
-            .profile-section {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .contact-info {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .profile-image {
-                width: 120px;
-                height: 120px;
-            }
-        }
         body.light-theme {
             background: #f0f0f0;
             color: #333;
         }
-
         body.light-theme .contact-item {
             background: rgba(0, 0, 0, 0.1);
             color: #333;
         }
-
         body.light-theme .contact-item span {
             color: #333;
         }
     </style>
 </head>
 <body>
+    <a href="chess.html" class="game-toggle" title="بازی شطرنج">
+        <i class="fas fa-chess"></i>
+    </a>
     
     <canvas id="particles-canvas"></canvas>
-    <div class="scan-line"></div>
     
     <button class="theme-toggle" onclick="toggleTheme()">
         <i class="fas fa-moon" id="theme-icon"></i>
@@ -286,27 +281,31 @@
     
     <div class="container">
         <div class="profile-section">
-            <img src="https://s6.uupload.ir/files/avatar_4eom.jpeg" alt="Matin481" class="profile-image" id="profileImage">
+            <img src="https://s6.uupload.ir/files/avatar_4eom.jpeg" alt="Matin481 - پروفایل" class="profile-image" id="profileImage">
             <div class="name-container">
-               <strong><h1 class="name glitch" data-text="Matin481">Matin481</h1></strong>
+                <strong><h1 class="name glitch" data-text="Matin481">Matin481</h1></strong>
             </div>
         </div>
         
         <div class="contact-info">
             <div class="contact-item">
-                <i class="fab fa-discord"></i>
+                <i class="fas fa-phone-alt shaking-icon"></i>
+                <a href="tel:+989108704869" style="text-decoration: none; color: inherit;"><span id="phoneNumber">09108704869</span></a>
+            </div>
+
+            <div class="contact-item">
+                <i class="fab fa-discord shaking-icon"></i>
                 <span id="discordId">_matin481</span>
             </div>
             
             <div class="contact-item">
-                <i class="fas fa-envelope"></i>
-                <span id="email">m92755452@gmail.com</span>
+                <i class="fas fa-envelope shaking-icon"></i>
+                <a href="mailto:m92755452@gmail.com" style="text-decoration: none; color: inherit;"><span id="email">m92755452@gmail.com</span></a>
             </div>
         </div>
     </div>
 
     <script>
-        
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
         
@@ -363,7 +362,6 @@
                 particle.draw();
             }
             
-            
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
@@ -394,17 +392,16 @@
             }
         }
         
-        document.getElementById('discordId').textContent = '_matin481';
-        document.getElementById('email').textContent = 'm92755452@gmail.com';
-        
-
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
-        
 
-         initParticles();
+        document.getElementById('discordId').textContent = '_matin481';
+        document.getElementById('email').textContent = 'm92755452@gmail.com';
+        document.getElementById('phoneNumber').textContent = '09108704869';
+
+        initParticles();
         animateParticles();
     </script>
 </body>
