@@ -2,11 +2,12 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>شطرنج Matin481</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link rel="site icon" href="https://s6.uupload.ir/files/avatar_4eom.jpeg">
+    <link rel="site icon" href="https://s6.uupload.ir/files/avatar_4eom.jpeg">
     <style>
-         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
         :root {
             --bg-color: #121212;
             --text-color: #e0e0e0;
@@ -104,13 +105,13 @@
         .dark { background-color: var(--board-dark); }
         .square:hover { background: rgba(255, 255, 255, .2); }
         .square.highlight { background-color: var(--highlight-color); }
-        .square.highlight-move { background-color: var(--move-highlight); position: relative; }
+        .square.highlight-move { position: relative; }
         .square.highlight-move::after {
             content: '';
             position: absolute;
             width: 25px;
             height: 25px;
-            background: rgba(255, 255, 255, .3);
+            background: var(--move-highlight);
             border-radius: 50%;
         }
         .piece {
@@ -123,6 +124,7 @@
         .piece:active { cursor: grabbing; }
         .white-piece { color: var(--piece-white); }
         .black-piece { color: var(--piece-black); }
+
         #game-info, #settings {
             position: absolute;
             top: 50%;
@@ -190,8 +192,6 @@
         #back-button:hover, #settings-button:hover { transform: scale(1.1); }
         #back-button { right: 20px; }
         #settings-button { left: 20px; }
-
-        
         .promotion-panel {
             position: absolute;
             top: 50%;
@@ -203,7 +203,7 @@
             border-radius: 15px;
             border: 1px solid #444;
             text-align: center;
-            display: none; 
+            display: none;
             flex-direction: column;
             align-items: center;
             z-index: 150;
@@ -229,8 +229,6 @@
             font-size: 2.5rem;
             padding: 0;
         }
-
-        
         #settings h2 {
             margin-bottom: 25px;
         }
@@ -271,6 +269,54 @@
         }
         .button-group {
             margin-top: 30px;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            body {
+                justify-content: flex-start;
+                padding-top: 20px;
+            }
+            #chessboard-container {
+                flex-direction: column;
+                padding: 0 10px;
+                justify-content: flex-start;
+            }
+            #chessboard {
+                width: 95vw;
+                height: 95vw;
+                max-width: 450px;
+                max-height: 450px;
+            }
+            .piece {
+                font-size: 10vw;
+                max-font-size: 50px;
+            }
+            #game-info, #settings, .promotion-panel {
+                width: 90%;
+                max-width: 400px;
+                padding: 20px;
+            }
+            #game-info h2, #settings h2 {
+                font-size: 2rem;
+            }
+            .option-button, button {
+                font-size: 1rem;
+                padding: 10px 15px;
+            }
+            #back-button, #settings-button {
+                top: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.3rem;
+            }
+            #back-button { right: 10px; }
+            #settings-button { left: 10px; }
+            .promotion-options button {
+                width: 50px;
+                height: 50px;
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
@@ -321,7 +367,6 @@
                 <button onclick="promotePawn('n')" title="اسب"><span class="piece white-piece">♘</span></button>
             </div>
         </div>
-
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
@@ -386,10 +431,9 @@
                 const moveObj = { from: selectedSquare, to: squareId };
                 const piece = chess.get(selectedSquare);
 
-                
                 if (piece && piece.type === 'p' && (squareId[1] === '8')) {
                     promotingPawnMove = moveObj;
-                    showPromotionPanel(); 
+                    showPromotionPanel();
                     clearHighlights();
                     selectedSquare = null;
                     return;
@@ -421,7 +465,7 @@
         function showPromotionPanel() {
             promotionPanel.style.display = 'flex';
             chessboard.style.pointerEvents = 'none';
-            
+
             const promotionButtons = promotionPanel.querySelectorAll('.promotion-options button span');
             const turn = chess.turn();
             promotionButtons.forEach(span => {
@@ -526,7 +570,6 @@
             gameInfo.style.display = 'flex';
             gameInfo.querySelector('h2').textContent = msg;
             gameInfo.querySelector('button').textContent = 'بازی مجدد';
-            
         }
 
         function showSettings() {
@@ -540,7 +583,6 @@
         }
 
         function startGame() {
-            
             botDifficulty = document.querySelector('#difficulty-options .option-button.active').dataset.value;
             const theme = document.querySelector('#theme-options .option-button.active').dataset.value;
 
