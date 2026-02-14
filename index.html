@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-    <meta name="google-site-verification" content="GM5VO5Hz2Gxz2_SA1S0mNldbdpQ_W2LiEWeOeM5SLEg" />
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Matin481</title>
     <meta name="google-site-verification" content="GM5VO5Hz2Gxz2_SA1S0mNldbdpQ_W2LiEWeOeM5SLEg" />
+    <title>Matin481</title>
+    
     <!-- =============== META TAGS FOR SEO =============== -->
     <meta name="description" content="Matin481. Fullstack developer specializing in React, Node.js, and modern web technologies. Space enthusiast and NASA news follower.">
     <meta name="keywords" content="Matin481, React Developer, Fullstack Developer, JavaScript, Node.js, Web Development, NASA, Space News">
@@ -554,7 +554,7 @@
             );
         };
 
-        // =============== پروفایل با عکس شما و انیمیشن‌های کامل ===============
+        // =============== پروفایل با عکس شما ===============
         const ProfileImage = () => {
             const [tilt, setTilt] = useState({ x: 0, y: 0 });
             const [rotation, setRotation] = useState(0);
@@ -680,11 +680,14 @@
             );
         };
 
+        // =============== Bio با تایپ هوشمند (رفع مشکل حروف تکراری) ===============
         const CustomBio = ({ lang }) => {
             const [displayText, setDisplayText] = useState('');
             const [isTyping, setIsTyping] = useState(false);
             const [showFormula, setShowFormula] = useState(false);
             const { theme } = React.useContext(ThemeContext);
+            const typingRef = useRef(false);
+            const timeoutRef = useRef(null);
             
             const texts = {
                 fa: 'توسعه دهنده وبسایت و برنامه نویس در جهت وب و همچنان علاقه مند به مطالب منطقی و علمی',
@@ -692,22 +695,71 @@
             };
 
             useEffect(() => {
-                setIsTyping(true);
-                let i = 0;
+                // ریست کردن همه چیز
+                if (timeoutRef.current) {
+                    clearTimeout(timeoutRef.current);
+                }
+                typingRef.current = true;
                 setDisplayText('');
+                setIsTyping(true);
+                setShowFormula(false);
                 
-                const typing = setInterval(() => {
-                    if (i < texts[lang].length) {
-                        setDisplayText(prev => prev + texts[lang].charAt(i));
+                let i = 0;
+                const targetText = texts[lang];
+                
+                const typeNextChar = () => {
+                    if (!typingRef.current) return;
+                    
+                    if (i < targetText.length) {
+                        const currentChar = targetText.charAt(i);
+                        const nextChar = targetText.charAt(i + 1);
+                        const prevChar = targetText.charAt(i - 1);
+                        
+                        setDisplayText(prev => prev + currentChar);
                         i++;
+                        
+                        // محاسبه سرعت هوشمند
+                        let delay = 40; // سرعت پایه
+                        
+                        // حروف تکراری رو تشخیص بده (مثل ییی)
+                        if (prevChar && currentChar === prevChar) {
+                            delay = 100; // خیلی کندتر
+                        }
+                        // فاصله‌ها سریع
+                        else if (currentChar === ' ' || currentChar === '،') {
+                            delay = 20; // تندتر
+                        }
+                        // حروف آخر کلمه یه کم کندتر
+                        else if (nextChar === ' ' || nextChar === '،' || nextChar === '.') {
+                            delay = 60; // یه کم کندتر
+                        }
+                        // نقطه آخر جمله خیلی کند
+                        else if (currentChar === '.' || currentChar === '!' || currentChar === '؟') {
+                            delay = 200; // مکث طولانی
+                        }
+                        // اعداد
+                        else if (!isNaN(currentChar)) {
+                            delay = 60;
+                        }
+                        
+                        timeoutRef.current = setTimeout(typeNextChar, delay);
                     } else {
-                        clearInterval(typing);
+                        // پایان تایپ
                         setIsTyping(false);
-                        setTimeout(() => setShowFormula(true), 500);
+                        typingRef.current = false;
+                        setTimeout(() => setShowFormula(true), 700);
                     }
-                }, 40);
-
-                return () => clearInterval(typing);
+                };
+                
+                // شروع تایپ با یه مکث کوتاه
+                timeoutRef.current = setTimeout(typeNextChar, 100);
+                
+                return () => {
+                    typingRef.current = false;
+                    if (timeoutRef.current) {
+                        clearTimeout(timeoutRef.current);
+                    }
+                };
             }, [lang]);
 
             return (
@@ -729,16 +781,19 @@
                         border: theme === 'dark' ? '1px solid #333' : '1px solid #eaeaea',
                         boxShadow: theme === 'dark'
                             ? '0 10px 30px -15px rgba(0,0,0,0.5)'
-                            : '0 10px 30px -15px rgba(0,0,0,0.1)'
+                            : '0 10px 30px -15px rgba(0,0,0,0.1)',
+                        minHeight: '100px',
+                        direction: lang === 'fa' ? 'rtl' : 'ltr'
                     }}>
-                        {displayText}
+                        <span>{displayText}</span>
                         {isTyping && (
                             <span style={{
                                 display: 'inline-block',
                                 width: '3px',
                                 height: '1.4rem',
                                 background: theme === 'dark' ? '#fff' : '#111',
-                                marginLeft: '4px',
+                                marginLeft: lang === 'fa' ? '0' : '4px',
+                                marginRight: lang === 'fa' ? '4px' : '0',
                                 animation: 'blink 0.8s infinite',
                                 verticalAlign: 'middle'
                             }} />
@@ -1460,7 +1515,7 @@
                             gap: '1rem'
                         }}>
                             <div>
-                                <span>© 2025 Matin481</span>
+                                <span>© 2026 Matin481</span>
                                 <span style={{ margin: '0 0.5rem' }}>•</span>
                                 <span>v2.0.1</span>
                             </div>
