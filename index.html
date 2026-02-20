@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <meta name="google-site-verification" content="GM5VO5Hz2Gxz2_SA1S0mNldbdpQ_W2LiEWeOeM5SLEg" />
     <title>Matin481</title>
     
     <!-- =============== META TAGS FOR SEO =============== -->
@@ -19,16 +18,16 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Matin481">
     <meta name="twitter:description" content="React Developer & Space Enthusiast">
+    <meta name="twitter:site" content="@Matin4810">
     
     <link rel="canonical" href="https://matin481.github.io">
     
-    <!-- آیکون سایت با عکس شما -->
-    <link rel="icon" href="https://s6.uupload.ir/files/avatar_4eom.jpeg" type="image/jpeg">
-    
+    <link rel="icon" href="https://s6.uupload.ir/files/avatar_4eom.jpeg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Font Awesome 6 (جدید) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
@@ -177,7 +176,7 @@
 
         .contact-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 1px;
             border-radius: 12px;
             overflow: hidden;
@@ -268,6 +267,7 @@
             .profile-image {
                 width: 100px !important;
                 height: 100px !important;
+                font-size: 2rem !important;
             }
         }
 
@@ -327,11 +327,6 @@
             to { transform: rotate(360deg); }
         }
 
-        @keyframes orbit {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
         @keyframes borderRotate {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -340,16 +335,6 @@
         @keyframes counterRotate {
             from { transform: rotate(0deg); }
             to { transform: rotate(-360deg); }
-        }
-
-        @keyframes floatParticle {
-            0% { transform: translate(0, 0); opacity: 1; }
-            100% { transform: translate(20px, -20px); opacity: 0; }
-        }
-
-        @keyframes widthIn {
-            from { opacity: 0; width: 0; }
-            to { opacity: 1; width: 100%; }
         }
 
         @keyframes ripple {
@@ -387,7 +372,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useRef, useCallback } = React;
+        const { useState, useEffect, useRef } = React;
 
         const ThemeContext = React.createContext();
 
@@ -428,7 +413,6 @@
 
                 updateDimensions();
                 window.addEventListener('resize', updateDimensions);
-
                 return () => window.removeEventListener('resize', updateDimensions);
             }, []);
 
@@ -554,7 +538,6 @@
             );
         };
 
-        // =============== پروفایل با عکس شما ===============
         const ProfileImage = () => {
             const [tilt, setTilt] = useState({ x: 0, y: 0 });
             const [rotation, setRotation] = useState(0);
@@ -615,6 +598,9 @@
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        fontSize: isMobile ? '2rem' : '2.8rem',
+                        fontWeight: '700',
+                        color: theme === 'dark' ? '#fff' : '#111',
                         border: theme === 'dark' ? '2px solid #333' : '2px solid #fff',
                         transition: 'transform 0.1s ease',
                         transform: isMobile 
@@ -629,65 +615,43 @@
                         animation: isMobile ? 'none' : 'float 6s ease-in-out infinite'
                     }}
                 >
-                    {/* عکس پروفایل شما */}
-                    <img 
-                        src="https://s6.uupload.ir/files/avatar_4eom.jpeg"
-                        alt="Matin481"
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            borderRadius: '50%',
-                            position: 'relative',
-                            zIndex: 1
-                        }}
-                        onError={(e) => {
-                            e.target.style.display = 'none';
-                            e.target.parentElement.innerHTML += '<span style="font-size: 2.8rem; font-weight: 700; z-index: 2;">MN</span>';
-                        }}
-                    />
+                    <span style={{
+                        animation: isMobile ? 'none' : 'counterRotate 6s linear infinite',
+                        display: 'inline-block',
+                        transform: isMobile ? 'none' : `rotate(-${rotation}deg)`
+                    }}>MN</span>
                     
-                    {/* انیمیشن shimmer */}
                     <div style={{
                         position: 'absolute',
                         top: '-50%',
                         left: '-50%',
                         width: '200%',
                         height: '200%',
-                        background: 'linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%)',
-                        animation: isMobile ? 'none' : 'shimmer 3s infinite',
-                        zIndex: 2,
-                        pointerEvents: 'none'
+                        background: 'linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)',
+                        animation: isMobile ? 'none' : 'shimmer 3s infinite'
                     }} />
                     
-                    {/* انیمیشن border چرخان */}
                     <div style={{
                         position: 'absolute',
                         inset: 0,
                         borderRadius: '50%',
-                        padding: '3px',
-                        background: theme === 'dark' 
-                            ? 'linear-gradient(135deg, #fff 0%, transparent 50%, #fff 100%)'
-                            : 'linear-gradient(135deg, #111 0%, transparent 50%, #111 100%)',
+                        padding: '2px',
+                        background: 'linear-gradient(135deg, #111 0%, transparent 50%, #111 100%)',
                         mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
                         WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
                         WebkitMaskComposite: 'xor',
                         maskComposite: 'exclude',
-                        animation: isMobile ? 'none' : 'borderRotate 4s linear infinite',
-                        zIndex: 3
+                        animation: isMobile ? 'none' : 'borderRotate 4s linear infinite'
                     }} />
                 </div>
             );
         };
 
-        // =============== Bio با تایپ هوشمند (رفع مشکل حروف تکراری) ===============
         const CustomBio = ({ lang }) => {
             const [displayText, setDisplayText] = useState('');
             const [isTyping, setIsTyping] = useState(false);
             const [showFormula, setShowFormula] = useState(false);
             const { theme } = React.useContext(ThemeContext);
-            const typingRef = useRef(false);
-            const timeoutRef = useRef(null);
             
             const texts = {
                 fa: 'توسعه دهنده وبسایت و برنامه نویس در جهت وب و همچنان علاقه مند به مطالب منطقی و علمی',
@@ -695,71 +659,22 @@
             };
 
             useEffect(() => {
-                // ریست کردن همه چیز
-                if (timeoutRef.current) {
-                    clearTimeout(timeoutRef.current);
-                }
-                typingRef.current = true;
-                setDisplayText('');
                 setIsTyping(true);
-                setShowFormula(false);
-                
                 let i = 0;
-                const targetText = texts[lang];
+                setDisplayText('');
                 
-                const typeNextChar = () => {
-                    if (!typingRef.current) return;
-                    
-                    if (i < targetText.length) {
-                        const currentChar = targetText.charAt(i);
-                        const nextChar = targetText.charAt(i + 1);
-                        const prevChar = targetText.charAt(i - 1);
-                        
-                        setDisplayText(prev => prev + currentChar);
+                const typing = setInterval(() => {
+                    if (i < texts[lang].length) {
+                        setDisplayText(prev => prev + texts[lang].charAt(i));
                         i++;
-                        
-                        // محاسبه سرعت هوشمند
-                        let delay = 40; // سرعت پایه
-                        
-                        // حروف تکراری رو تشخیص بده (مثل ییی)
-                        if (prevChar && currentChar === prevChar) {
-                            delay = 100; // خیلی کندتر
-                        }
-                        // فاصله‌ها سریع
-                        else if (currentChar === ' ' || currentChar === '،') {
-                            delay = 20; // تندتر
-                        }
-                        // حروف آخر کلمه یه کم کندتر
-                        else if (nextChar === ' ' || nextChar === '،' || nextChar === '.') {
-                            delay = 60; // یه کم کندتر
-                        }
-                        // نقطه آخر جمله خیلی کند
-                        else if (currentChar === '.' || currentChar === '!' || currentChar === '؟') {
-                            delay = 200; // مکث طولانی
-                        }
-                        // اعداد
-                        else if (!isNaN(currentChar)) {
-                            delay = 60;
-                        }
-                        
-                        timeoutRef.current = setTimeout(typeNextChar, delay);
                     } else {
-                        // پایان تایپ
+                        clearInterval(typing);
                         setIsTyping(false);
-                        typingRef.current = false;
-                        setTimeout(() => setShowFormula(true), 700);
+                        setTimeout(() => setShowFormula(true), 500);
                     }
-                };
-                
-                // شروع تایپ با یه مکث کوتاه
-                timeoutRef.current = setTimeout(typeNextChar, 100);
-                
-                return () => {
-                    typingRef.current = false;
-                    if (timeoutRef.current) {
-                        clearTimeout(timeoutRef.current);
-                    }
-                };
+                }, 40);
+
+                return () => clearInterval(typing);
             }, [lang]);
 
             return (
@@ -781,19 +696,16 @@
                         border: theme === 'dark' ? '1px solid #333' : '1px solid #eaeaea',
                         boxShadow: theme === 'dark'
                             ? '0 10px 30px -15px rgba(0,0,0,0.5)'
-                            : '0 10px 30px -15px rgba(0,0,0,0.1)',
-                        minHeight: '100px',
-                        direction: lang === 'fa' ? 'rtl' : 'ltr'
+                            : '0 10px 30px -15px rgba(0,0,0,0.1)'
                     }}>
-                        <span>{displayText}</span>
+                        {displayText}
                         {isTyping && (
                             <span style={{
                                 display: 'inline-block',
                                 width: '3px',
                                 height: '1.4rem',
                                 background: theme === 'dark' ? '#fff' : '#111',
-                                marginLeft: lang === 'fa' ? '0' : '4px',
-                                marginRight: lang === 'fa' ? '4px' : '0',
+                                marginLeft: '4px',
                                 animation: 'blink 0.8s infinite',
                                 verticalAlign: 'middle'
                             }} />
@@ -849,38 +761,20 @@
             );
         };
 
-        // =============== Contact Item با انیمیشن‌های کامل ===============
         const ContactItem = ({ icon, label, value, href, delay }) => {
             const [hover, setHover] = useState(false);
-            const [particles, setParticles] = useState([]);
             const { theme } = React.useContext(ThemeContext);
             const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
-            const handleMouseEnter = () => {
-                if (isMobile) return;
-                setHover(true);
-                const newParticles = [];
-                for (let i = 0; i < 5; i++) {
-                    newParticles.push({
-                        id: i,
-                        x: Math.random() * 100,
-                        y: Math.random() * 100,
-                        size: Math.random() * 5 + 2,
-                        speed: Math.random() * 2 + 1
-                    });
-                }
-                setParticles(newParticles);
-            };
 
             return (
                 <div
                     className="contact-item"
-                    onMouseEnter={handleMouseEnter}
+                    onMouseEnter={() => !isMobile && setHover(true)}
                     onMouseLeave={() => setHover(false)}
                     style={{
                         background: theme === 'dark' ? '#1a1a1a' : '#fff',
                         padding: isMobile ? '1.2rem 1rem' : '1.8rem 1.5rem',
-                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                        transition: 'all 0.3s ease',
                         position: 'relative',
                         overflow: 'hidden',
                         transform: hover && !isMobile ? 'translateY(-5px)' : 'translateY(0)',
@@ -892,54 +786,20 @@
                         cursor: 'pointer'
                     }}
                 >
-                    {/* ذرات hover */}
-                    {hover && !isMobile && particles.map(p => (
-                        <div
-                            key={p.id}
-                            style={{
-                                position: 'absolute',
-                                left: `${p.x}%`,
-                                top: `${p.y}%`,
-                                width: `${p.size}px`,
-                                height: `${p.size}px`,
-                                background: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-                                borderRadius: '50%',
-                                animation: `floatParticle ${p.speed}s linear infinite`,
-                                pointerEvents: 'none'
-                            }}
-                        />
-                    ))}
-
-                    {/* دایره چرخان */}
-                    <div style={{
-                        position: 'absolute',
-                        top: '10px',
-                        right: '10px',
-                        width: '30px',
-                        height: '30px',
-                        border: theme === 'dark' ? '1px solid rgba(255,255,255,0.05)' : '1px solid rgba(0,0,0,0.05)',
-                        borderRadius: '50%',
-                        animation: hover && !isMobile ? 'orbit 3s linear infinite' : 'none'
-                    }} />
-                    
                     <i className={icon} style={{
                         fontSize: isMobile ? '1.2rem' : '1.4rem',
                         color: theme === 'dark' ? '#fff' : '#111',
                         marginBottom: isMobile ? '0.5rem' : '1rem',
-                        transform: hover && !isMobile ? 'scale(1.2) rotate(360deg)' : 'scale(1) rotate(0)',
-                        transition: 'transform 0.5s ease',
+                        transition: 'transform 0.3s ease',
                         display: 'inline-block'
                     }} />
                     
                     <div style={{
                         fontSize: '0.7rem',
                         textTransform: 'uppercase',
-                        color: hover && !isMobile 
-                            ? (theme === 'dark' ? '#fff' : '#111')
-                            : (theme === 'dark' ? '#888' : '#888'),
+                        color: theme === 'dark' ? '#888' : '#888',
                         letterSpacing: '1px',
                         marginBottom: '0.3rem',
-                        transition: 'color 0.3s ease',
                         fontWeight: '500'
                     }}>
                         {label}
@@ -953,85 +813,30 @@
                         {href ? (
                             <a 
                                 href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 style={{
                                     color: theme === 'dark' ? '#fff' : '#111',
-                                    textDecoration: 'none',
-                                    position: 'relative',
-                                    display: 'inline-block'
-                                }}
-                                onMouseEnter={(e) => {
-                                    if (!isMobile) e.currentTarget.style.transform = 'scale(1.05)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = 'scale(1)';
+                                    textDecoration: 'none'
                                 }}
                             >
                                 {value}
-                                <span style={{
-                                    position: 'absolute',
-                                    bottom: '-2px',
-                                    left: 0,
-                                    width: hover && !isMobile ? '100%' : '0',
-                                    height: '1px',
-                                    background: theme === 'dark' ? '#fff' : '#111',
-                                    transition: 'width 0.3s ease'
-                                }} />
                             </a>
                         ) : value}
                     </div>
-
-                    {hover && !isMobile && (
-                        <div style={{
-                            position: 'absolute',
-                            bottom: '5px',
-                            right: '5px',
-                            fontSize: '0.6rem',
-                            color: theme === 'dark' ? '#444' : '#ccc',
-                            fontFamily: 'monospace'
-                        }}>
-                            E = mc²
-                        </div>
-                    )}
                 </div>
             );
         };
 
-        // =============== Skill Item با انیمیشن‌های کامل ===============
         const SkillItem = ({ name, index }) => {
             const [hover, setHover] = useState(false);
-            const [position, setPosition] = useState({ x: 0, y: 0 });
-            const [quantumState, setQuantumState] = useState(0);
-            const skillRef = useRef(null);
             const { theme } = React.useContext(ThemeContext);
             const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-            useEffect(() => {
-                const interval = setInterval(() => {
-                    if (!hover && !isMobile) {
-                        setQuantumState(Math.random());
-                    }
-                }, 500);
-
-                return () => clearInterval(interval);
-            }, [hover, isMobile]);
-
-            const handleMouseMove = (e) => {
-                if (isMobile) return;
-                const rect = skillRef.current.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width - 0.5;
-                const y = (e.clientY - rect.top) / rect.height - 0.5;
-                setPosition({ x: x * 15, y: y * 15 });
-            };
-
             return (
                 <div
-                    ref={skillRef}
                     onMouseEnter={() => !isMobile && setHover(true)}
-                    onMouseMove={handleMouseMove}
-                    onMouseLeave={() => {
-                        setHover(false);
-                        setPosition({ x: 0, y: 0 });
-                    }}
+                    onMouseLeave={() => setHover(false)}
                     style={{
                         background: hover && !isMobile 
                             ? (theme === 'dark' ? '#fff' : '#111')
@@ -1044,71 +849,12 @@
                             : (theme === 'dark' ? '#fff' : '#111'),
                         border: theme === 'dark' ? '1px solid #333' : '1px solid #eaeaea',
                         borderRadius: '8px',
-                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        cursor: 'pointer',
-                        transform: hover && !isMobile 
-                            ? `translate(${position.x}px, ${position.y}px) scale(1.08)` 
-                            : `scale(${1 + quantumState * 0.02})`,
-                        boxShadow: hover && !isMobile 
-                            ? (theme === 'dark' ? '0 15px 30px -15px rgba(0,0,0,0.5)' : '0 15px 30px -15px rgba(0,0,0,0.4)')
-                            : 'none',
-                        zIndex: hover ? 10 : 1,
-                        animation: `fadeInScale 0.4s ease-out ${index * 0.03}s both`,
-                        opacity: hover ? 1 : (isMobile ? 1 : 0.7 + quantumState * 0.3)
+                        transition: 'all 0.3s ease',
+                        textAlign: 'center',
+                        animation: `fadeInScale 0.4s ease-out ${index * 0.03}s both`
                     }}
                 >
                     {name}
-                    
-                    {/* خط حرکت کوانتومی */}
-                    {!hover && !isMobile && (
-                        <div style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            background: theme === 'dark'
-                                ? 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)'
-                                : 'linear-gradient(90deg, transparent, rgba(0,0,0,0.02), transparent)',
-                            transform: `translateX(${quantumState * 100}%)`,
-                            transition: 'transform 0.5s ease',
-                            pointerEvents: 'none'
-                        }} />
-                    )}
-
-                    {/* دایره‌های چرخان hover */}
-                    {hover && !isMobile && (
-                        <>
-                            <div style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                width: '100px',
-                                height: '100px',
-                                border: theme === 'dark' 
-                                    ? '1px solid rgba(255,255,255,0.2)' 
-                                    : '1px solid rgba(0,0,0,0.2)',
-                                borderRadius: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                animation: 'orbit 2s linear infinite'
-                            }} />
-                            <div style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                width: '60px',
-                                height: '60px',
-                                border: theme === 'dark' 
-                                    ? '1px solid rgba(255,255,255,0.2)' 
-                                    : '1px solid rgba(0,0,0,0.2)',
-                                borderRadius: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                animation: 'orbit 3s linear infinite reverse'
-                            }} />
-                        </>
-                    )}
                 </div>
             );
         };
@@ -1391,6 +1137,7 @@
                     title: 'توسعه‌دهنده فول‌استک',
                     phone: 'تلفن',
                     telegram: 'تلگرام',
+                    x: 'اکس (توییتر)',
                     email: 'ایمیل',
                     discord: 'دیسکورد',
                     skills: 'تخصص‌ها'
@@ -1399,6 +1146,7 @@
                     title: 'Fullstack Developer',
                     phone: 'PHONE',
                     telegram: 'TELEGRAM',
+                    x: 'X (TWITTER)',
                     email: 'EMAIL',
                     discord: 'DISCORD',
                     skills: 'Skills'
@@ -1448,7 +1196,6 @@
                         </div>
 
                         <CustomBio lang={language} />
-
                         <NASANews language={language} />
 
                         <div className="contact-grid" style={{
@@ -1468,6 +1215,13 @@
                                 value="@Matin481"
                                 href="https://t.me/Matin481"
                                 delay="0.6"
+                            />
+                            <ContactItem 
+                                icon="fab fa-x-twitter"
+                                label={content[language].x}
+                                value="@Matin4810"
+                                href="https://x.com/Matin4810"
+                                delay="0.65"
                             />
                             <ContactItem 
                                 icon="far fa-envelope"
@@ -1517,28 +1271,55 @@
                             <div>
                                 <span>© 2026 Matin481</span>
                                 <span style={{ margin: '0 0.5rem' }}>•</span>
-                                <span>v2.0.1</span>
+                                <span>v2.0.3</span>
                             </div>
                             
                             <div style={{
                                 display: 'flex',
                                 gap: '1rem'
                             }}>
-                                {['github', 'linkedin-in', 'x-twitter'].map((social) => (
-                                    <a 
-                                        key={social}
-                                        href="#"
-                                        style={{
-                                            color: theme === 'dark' ? '#888' : '#666',
-                                            fontSize: '1.2rem',
-                                            transition: 'color 0.2s ease'
-                                        }}
-                                        onMouseEnter={(e) => e.currentTarget.style.color = theme === 'dark' ? '#fff' : '#111'}
-                                        onMouseLeave={(e) => e.currentTarget.style.color = theme === 'dark' ? '#888' : '#666'}
-                                    >
-                                        <i className={`fab fa-${social}`}></i>
-                                    </a>
-                                ))}
+                                <a 
+                                    href="https://github.com/Matin481"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                        color: theme === 'dark' ? '#888' : '#666',
+                                        fontSize: '1.2rem',
+                                        transition: 'color 0.2s ease'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.color = theme === 'dark' ? '#fff' : '#111'}
+                                    onMouseLeave={(e) => e.currentTarget.style.color = theme === 'dark' ? '#888' : '#666'}
+                                >
+                                    <i className="fab fa-github"></i>
+                                </a>
+                                <a 
+                                    href="https://linkedin.com/in/matin481"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                        color: theme === 'dark' ? '#888' : '#666',
+                                        fontSize: '1.2rem',
+                                        transition: 'color 0.2s ease'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.color = theme === 'dark' ? '#fff' : '#111'}
+                                    onMouseLeave={(e) => e.currentTarget.style.color = theme === 'dark' ? '#888' : '#666'}
+                                >
+                                    <i className="fab fa-linkedin-in"></i>
+                                </a>
+                                <a 
+                                    href="https://x.com/Matin4810"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                        color: theme === 'dark' ? '#888' : '#666',
+                                        fontSize: '1.2rem',
+                                        transition: 'color 0.2s ease'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.color = theme === 'dark' ? '#fff' : '#111'}
+                                    onMouseLeave={(e) => e.currentTarget.style.color = theme === 'dark' ? '#888' : '#666'}
+                                >
+                                    <i className="fab fa-x-twitter"></i>
+                                </a>
                             </div>
                         </footer>
                     </main>
