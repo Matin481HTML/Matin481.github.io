@@ -1,508 +1,973 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-  <title>Matin481</title>
-
-  <meta name="description" content="Matin481 - توسعه‌دهنده فول‌استک | علاقه‌مند به فضا و اخبار ناسا" />
-  <meta name="keywords" content="Matin481, توسعه دهنده وب, React, Node.js, JavaScript, NASA, اخبار فضا" />
-  <meta name="author" content="Matin481" />
-
-  <meta property="og:title" content="Matin481" />
-  <meta property="og:description" content="توسعه‌دهنده فول‌استک با علاقه به تکنولوژی و کاوش فضایی" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://matin481.github.io" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <link rel="icon" href="https://s6.uupload.ir/files/avatar_4eom.jpeg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html, body { width:100%; min-height:100vh; overflow-x:hidden; }
-    body { font-family:'Inter',system-ui,sans-serif; line-height:1.6; transition:background 0.4s,color 0.4s; }
-    body.light-mode { background:#f8f9fa; color:#111; }
-    body.dark-mode  { background:#0d1117; color:#c9d1d9; }
-
-    #root { position:relative; min-height:100vh; }
-
-    .container { max-width:1180px; margin:0 auto; padding:2rem 1.5rem; }
-
-    .top-controls {
-      position:fixed; top:1rem; left:1rem; right:1rem;
-      display:flex; justify-content:space-between; z-index:1000; pointer-events:none;
-    }
-    .top-controls > * { pointer-events:auto; }
-
-    .theme-toggle, .lang-switch {
-      background:rgba(255,255,255,0.07); backdrop-filter:blur(12px);
-      border:1px solid rgba(255,255,255,0.12); border-radius:50px;
-      padding:0.25rem; display:flex; gap:0.25rem;
-      box-shadow:0 4px 24px rgba(0,0,0,0.25);
-    }
-
-    button { background:none; border:none; padding:0.5rem 1.1rem; cursor:pointer; border-radius:50px; font-weight:500; transition:all 0.25s; color:inherit; }
-    button.active { background:rgba(255,255,255,0.15); box-shadow:0 2px 8px rgba(0,0,0,0.2); }
-
-    .profile {
-      display:flex; align-items:center; gap:clamp(2rem,5vw,3.5rem);
-      margin:5rem 0 4rem; flex-wrap:wrap; justify-content:center;
-    }
-
-    .avatar-container {
-      width:clamp(120px,18vw,160px); height:clamp(120px,18vw,160px);
-      border-radius:50%; overflow:hidden; border:4px solid;
-      box-shadow:0 12px 40px -12px rgba(0,0,0,0.5);
-      animation:float 7s ease-in-out infinite; transition:transform 0.3s;
-    }
-
-    body.light-mode .avatar-container { border-color:#e2e8f0; }
-    body.dark-mode .avatar-container  { border-color:#30363d; }
-
-    .contact-grid {
-      display:grid; grid-template-columns:repeat(4,1fr); gap:1.2rem;
-      margin:3rem 0; max-width:1100px; margin-inline:auto;
-    }
-
-    .contact-item {
-      border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,0.08);
-      background:inherit; transition:all 0.35s ease; box-shadow:0 4px 20px rgba(0,0,0,0.12);
-      padding:1.8rem 1.4rem; text-align:center; display:flex; flex-direction:column;
-      align-items:center; justify-content:center; min-height:140px;
-    }
-
-    .contact-item:hover {
-      transform:translateY(-8px); box-shadow:0 16px 40px rgba(0,0,0,0.25);
-      border-color:rgba(100,180,255,0.3);
-    }
-
-    .contact-item .icon-wrapper {
-      width:44px; height:44px; margin-bottom:1rem;
-      display:flex; align-items:center; justify-content:center;
-    }
-
-    .contact-item img.logo-bale,
-    .contact-item i {
-      width:44px; height:44px; line-height:44px; text-align:center;
-    }
-
-    .contact-item img.logo-bale { object-fit:contain; background:transparent; }
-
-    .contact-item .label {
-      font-size:0.78rem; text-transform:uppercase; opacity:0.7;
-      letter-spacing:0.7px; margin-bottom:0.4rem;
-    }
-
-    .contact-item .value { font-weight:600; font-size:1.05rem; }
-
-    .username-with-at {
-      direction: ltr;
-      unicode-bidi: isolate;
-      display: inline-block;
-    }
-
-    .skills-grid {
-      display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
-      gap:1rem; margin:2.5rem 0;
-    }
-
-    .news-grid {
-      display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-      gap:1.6rem; margin-top:1.8rem;
-    }
-
-    .news-card {
-      border-radius:16px; overflow:hidden; background:inherit;
-      border:1px solid rgba(255,255,255,0.08); cursor:pointer;
-      transition:transform 0.3s, box-shadow 0.3s;
-    }
-
-    .news-card:hover { transform:translateY(-6px); box-shadow:0 20px 50px -15px rgba(0,0,0,0.4); }
-
-    .news-img { width:100%; height:180px; object-fit:cover; }
-
-    @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-12px); } }
-    @keyframes spin { to { transform:rotate(360deg); } }
-    @keyframes shimmer { 0% { transform:translateX(-100%) rotate(45deg); } 100% { transform:translateX(100%) rotate(45deg); } }
-    @keyframes blink { 0%,50% { opacity:1; } 51%,100% { opacity:0; } }
-    @keyframes rotate { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
-
-    @media (max-width:1024px) {
-      .contact-grid { grid-template-columns:repeat(2,1fr) !important; gap:1.4rem; }
-    }
-
-    @media (max-width:640px) {
-      .contact-grid { grid-template-columns:1fr !important; gap:1.6rem; }
-      .contact-item { min-height:160px; padding:1.6rem 1.2rem; }
-    }
-
-    @media (max-width:768px) {
-      .profile { flex-direction:column; text-align:center; gap:2rem; margin:3rem 0; }
-      h1 { font-size:2.8rem; }
-    }
-  </style>
-</head>
-<body class="dark-mode">
-  <div id="root"></div>
-
-  <script type="text/babel">
-    const { useState, useEffect, useRef, useContext } = React;
-
-    const ThemeContext = React.createContext();
-
-    function ThemeProvider({ children }) {
-      const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
-      useEffect(() => {
-        document.body.className = theme + '-mode';
-        localStorage.setItem('theme', theme);
-      }, [theme]);
-      return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>;
-    }
-
-    function ParticleBackground() {
-      const canvasRef = useRef(null);
-      const { theme } = useContext(ThemeContext);
-      const [size, setSize] = useState({ w: window.innerWidth, h: window.innerHeight });
-
-      useEffect(() => {
-        const resize = () => setSize({ w: window.innerWidth, h: window.innerHeight });
-        window.addEventListener('resize', resize);
-        return () => window.removeEventListener('resize', resize);
-      }, []);
-
-      useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        canvas.width = size.w;
-        canvas.height = size.h;
-
-        const particles = Array.from({length:70}, () => ({
-          x: Math.random()*size.w,
-          y: Math.random()*size.h,
-          r: Math.random()*1.6 + 0.5,
-          vx: (Math.random()-0.5)*0.35,
-          vy: (Math.random()-0.5)*0.35,
-          opacity: Math.random()*0.35 + 0.08
-        }));
-
-        let raf;
-        const loop = () => {
-          ctx.clearRect(0,0,size.w,size.h);
-          particles.forEach(p => {
-            p.x += p.vx; p.y += p.vy;
-            if (p.x<0 || p.x>size.w) p.vx *= -1;
-            if (p.y<0 || p.y>size.h) p.vy *= -1;
-            ctx.beginPath();
-            ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-            ctx.fillStyle = theme==='dark' ? `rgba(180,200,255,${p.opacity})` : `rgba(40,60,140,${p.opacity})`;
-            ctx.fill();
-          });
-          raf = requestAnimationFrame(loop);
-        };
-        loop();
-        return () => cancelAnimationFrame(raf);
-      }, [size, theme]);
-
-      return <canvas ref={canvasRef} style={{position:'fixed', inset:0, zIndex:-1, pointerEvents:'none', opacity:0.4}} />;
-    }
-
-    function TopControls({ lang, setLang }) {
-      const { theme, setTheme } = useContext(ThemeContext);
-
-      return (
-        <div className="top-controls">
-          <div className="theme-toggle">
-            <button className={theme==='light'?'active':''} onClick={()=>setTheme('light')}><i className="fas fa-sun"></i></button>
-            <button className={theme==='dark'?'active':''} onClick={()=>setTheme('dark')}><i className="fas fa-moon"></i></button>
-          </div>
-          <div className="lang-switch">
-            <button className={lang==='fa'?'active':''} onClick={()=>setLang('fa')}>FA</button>
-            <button className={lang==='en'?'active':''} onClick={()=>setLang('en')}>EN</button>
-          </div>
-        </div>
-      );
-    }
-
-    function ProfileAvatar() {
-      const { theme } = useContext(ThemeContext);
-      return (
-        <div className="avatar-container" style={{borderColor: theme==='dark'?'#444c56':'#cbd5e1'}}>
-          <img
-            src="https://s6.uupload.ir/files/avatar_4eom.jpeg"
-            alt="Matin481"
-            style={{width:'100%',height:'100%',objectFit:'cover'}}
-            onError={e=>{e.target.src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="60" text-anchor="middle" fill="%23666">MN</text></svg>';}}
-          />
-        </div>
-      );
-    }
-
-    function CustomBio({ lang = 'fa' }) {
-      const [displayed, setDisplayed] = useState('');
-      const [showEq, setShowEq] = useState(false);
-      const { theme } = useContext(ThemeContext);
-
-      const texts = {
-        fa: 'توسعه دهنده وبسایت و برنامه نویس در جهت وب و همچنان علاقه مند به مطالب منطقی و علمی',
-        en: 'Website developer and programmer focused on web development, with a strong interest in logical and scientific content.'
-      };
-
-      const fullText = texts[lang] || texts.fa || '';
-
-      useEffect(() => {
-        setDisplayed('');
-        setShowEq(false);
-
-        let index = 0;
-        const interval = setInterval(() => {
-          if (index < fullText.length) {
-            const char = fullText.charAt(index);
-           
-            if (char && char !== '') {
-              setDisplayed(prev => prev + char);
-            }
-            index++;
-          } else {
-            clearInterval(interval);
-            setTimeout(() => setShowEq(true), 800);
-          }
-        }, 40);
-
-        return () => clearInterval(interval);
-      }, [lang, fullText]);
-
-      return (
-        <div style={{margin:'3rem auto', maxWidth:'820px', position:'relative'}}>
-          <div style={{
-            padding:'2rem 2.4rem', borderRadius:'20px',
-            background: theme==='dark' ? 'rgba(22,27,34,0.7)' : 'rgba(255,255,255,0.75)',
-            backdropFilter:'blur(12px)',
-            border:`1px solid ${theme==='dark'?'#30363d':'#e2e8f0'}`,
-            boxShadow: theme==='dark' ? '0 16px 60px -20px #000' : '0 16px 60px -20px #0003',
-            lineHeight:1.8, fontSize:'1.1rem'
-          }}>
-            {displayed}
-            {displayed.length < fullText.length && <span style={{animation:'blink 1.2s step-end infinite', opacity:0.8}}>|</span>}
-
-            {showEq && (
-              <div style={{
-                marginTop:'1.6rem', padding:'1.1rem 1.5rem',
-                background: theme==='dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
-                borderRadius:'12px', fontFamily:'monospace', direction:'ltr', textAlign:'left',
-                border:`1px dashed ${theme==='dark'?'#444c56':'#cbd5e1'}`
-              }}>
-                {lang==='fa' ? 'دین = جهل' : 'religion = ignorance'}
-              </div>
-            )}
-          </div>
-        </div>
-      );
-    }
-
-    function ContactItem({ icon, label, value, href, delay=0.1, imgSrc }) {
-      const [hover, setHover] = useState(false);
-      const { theme } = useContext(ThemeContext);
-
-     
-      const renderValue = () => {
-        if (typeof value === 'string' && value.startsWith('@')) {
-          return <span className="username-with-at">{value}</span>;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Matin481</title>
+   
+    <meta name="description" content="Matin481. Fullstack developer specializing in React, Node.js, and modern web technologies. Space enthusiast and NASA news follower.">
+    <meta name="keywords" content="Matin481, React Developer, Fullstack Developer, JavaScript, Node.js, Web Development, NASA, Space News">
+    <meta name="author" content="Matin481">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta property="og:title" content="Matin481">
+    <meta property="og:description" content="Fullstack developer with passion for space and technology">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://matin481.github.io">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Matin481">
+    <meta name="twitter:description" content="React Developer & Space Enthusiast">
+    <meta name="twitter:site" content="@Matin4810">
+   
+    <link rel="canonical" href="https://matin481.github.io">
+    <link rel="icon" href="https://s6.uupload.ir/files/avatar_4eom.jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+   
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+   
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; min-height: 100vh; overflow-x: hidden; }
+        body {
+            font-family: 'Inter', 'Vazir', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            width: 100%;
         }
-        return value;
-      };
+        body.dark-mode {
+            background: #0f1419;
+            color: #e0e0e0;
+        }
+        body.dark-mode::before {
+            content: '';
+            position: fixed; inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 10% 0%, rgba(160,176,192,0.06) 0%, transparent 55%),
+                radial-gradient(ellipse 60% 50% at 90% 100%, rgba(160,176,192,0.04) 0%, transparent 55%);
+            pointer-events: none; z-index: 0;
+        }
+        body.light-mode {
+            background: #eef3f8;
+            color: #111;
+        }
+        body.light-mode::before {
+            content: '';
+            position: fixed; inset: 0;
+            background:
+                radial-gradient(ellipse 70% 50% at 10% 5%, rgba(160,176,192,0.06) 0%, transparent 55%),
+                radial-gradient(ellipse 60% 40% at 90% 95%, rgba(160,176,192,0.04) 0%, transparent 55%);
+            pointer-events: none; z-index: 0;
+        }
+        #root { width: 100%; min-height: 100vh; position: relative; z-index: 1; }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+        @media (max-width: 768px) { .container { padding: 1rem; } }
+        .top-controls {
+            position: fixed; top: 1rem; left: 1rem; right: 1rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; pointer-events: none;
+        }
+        .top-controls > * { pointer-events: auto; }
+        .theme-toggle, .language-switcher {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 50px;
+            padding: 0.35rem;
+            display: flex; gap: 0.25rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.12);
+        }
+        body.dark-mode .theme-toggle,
+        body.dark-mode .language-switcher {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.09);
+        }
+        body.light-mode .theme-toggle,
+        body.light-mode .language-switcher {
+            background: rgba(255,255,255,0.60);
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+        .theme-toggle button, .language-switcher button {
+            background: none; border: none;
+            padding: 0.5rem 1rem; font-size: 0.9rem;
+            cursor: pointer; border-radius: 50px;
+            transition: all 0.25s ease; color: inherit; font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        body.dark-mode .theme-toggle button.active,
+        body.dark-mode .language-switcher button.active {
+            background: rgba(160,176,192,0.18);
+            color: #c0d0e0;
+            box-shadow: 0 0 10px rgba(160,176,192,0.15);
+        }
+        body.light-mode .theme-toggle button.active,
+        body.light-mode .language-switcher button.active {
+            background: rgba(160,176,192,0.18);
+            color: #708090;
+        }
+        .language-switcher button.active { transform: scale(1.05); }
 
-      return (
-        <a href={href} target="_blank" rel="noopener noreferrer" style={{textDecoration:'none', color:'inherit'}}>
-          <div className="contact-item"
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
-            style={{
-              animation:`fadeInScale 0.7s ease-out ${delay}s both`,
-              transform: hover ? 'translateY(-7px)' : 'translateY(0)',
-              boxShadow: hover ? '0 20px 50px -15px rgba(0,0,0,0.35)' : '0 6px 25px -12px rgba(0,0,0,0.2)',
-              border: hover ? `1px solid ${theme==='dark'?'#60a5fa88':'#3b82f688'}` : '1px solid rgba(255,255,255,0.08)'
-            }}
-          >
-            <div className="icon-wrapper">
-              {imgSrc ? (
-                <img src={imgSrc} alt={label} style={{width:'48px', height:'48px', objectFit:'contain', background:'transparent'}} />
-              ) : (
-                <i className={icon} style={{fontSize:'2.1rem'}}></i>
-              )}
-            </div>
-            <div className="label">{label}</div>
-            <div className="value">{renderValue()}</div>
-          </div>
-        </a>
-      );
-    }
-
-    function SkillItem({ name, i }) {
-      const { theme } = useContext(ThemeContext);
-      return (
-        <div style={{
-          padding:'0.9rem 1.3rem', borderRadius:'12px',
-          background: theme==='dark'?'#1f2937':'#f1f5f9',
-          border:`1px solid ${theme==='dark'?'#374151':'#e2e8f0'}`,
-          textAlign:'center', fontWeight:500,
-          animation:`fadeInScale 0.5s ease-out ${i*0.05}s both`
-        }}>{name}</div>
-      );
-    }
-
-    function NASANews({ lang }) {
-      const [articles, setArticles] = useState([]);
-      const [loading, setLoading] = useState(true);
-      const [error, setError] = useState(null);
-      const { theme } = useContext(ThemeContext);
-
-      const txt = {
-        fa: { title:'آخرین اخبار ناسا', loading:'در حال بارگذاری...', error:'خطا در بارگذاری اخبار' },
-        en: { title:'Latest NASA News', loading:'Loading...', error:'Error loading news' }
-      }[lang || 'fa'];
-
-      useEffect(() => {
-        const fetchNews = async () => {
-          try {
-            setLoading(true);
-            const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.nasa.gov/rss/dyn/breaking_news.rss');
-            if (!res.ok) throw new Error('Network error');
-            const data = await res.json();
-
-            if (data.items?.length) {
-              const fallback = [
-                "https://www.nasa.gov/wp-content/uploads/2025/02/webb-galaxy-cluster.jpg?w=1920",
-                "https://www.nasa.gov/wp-content/uploads/2025/01/artemis-ii-launch.jpg?w=1920",
-                "https://www.nasa.gov/wp-content/uploads/2024/12/perseverance-rover.jpg?w=1920",
-                "https://www.nasa.gov/wp-content/uploads/2025/03/jwst-nebula.jpg?w=1920",
-                "https://www.nasa.gov/wp-content/uploads/2024/11/hubble-galaxy.jpg?w=1920",
-                "https://www.nasa.gov/wp-content/uploads/2025/02/mars-sample-return.jpg?w=1920"
-              ];
-
-              setArticles(data.items.slice(0,6).map((item,i)=>({
-                title: item.title || 'عنوان نامشخص',
-                desc: (item.description || '').replace(/<[^>]+>/g,'').substring(0,140) + '...',
-                link: item.link || '#',
-                date: new Date(item.pubDate || Date.now()).toLocaleDateString(lang==='fa'?'fa-IR':'en-US'),
-                thumb: item.thumbnail || fallback[i % fallback.length]
-              })));
-            } else {
-              throw new Error('No items');
+        
+        .language-switcher button .wave {
+            position: absolute;
+            border-radius: 50%;
+            background: transparent;
+            border: 2px solid rgba(255, 215, 0, 0.8);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            transform: translate(-50%, -50%) scale(0);
+            animation: waveEffect 0.8s ease-out forwards;
+            pointer-events: none;
+            z-index: 5;
+        }
+        @keyframes waveEffect {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+                border-width: 2px;
             }
-          } catch (err) {
-            setError(txt.error);
-            setArticles([{title:'NASA Update', desc:'...', link:'#', date:'2026', thumb:fallback[0]}]);
-          } finally {
-            setLoading(false);
-          }
+            70% {
+                transform: translate(-50%, -50%) scale(4);
+                opacity: 0.5;
+                border-width: 1px;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(8);
+                opacity: 0;
+                border-width: 0;
+            }
+        }
+       
+        .language-switcher button span {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        .language-switcher button:active span {
+            transform: rotate(360deg);
+        }
+
+       
+        .liquid-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translateZ(0);
+        }
+        .liquid-circle {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(160, 176, 192, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: width, height;
+        }
+        .liquid-circle.active {
+            width: 250vmax;
+            height: 250vmax;
+        }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 2px solid rgba(160,176,192,0.2);
+            border-top: 2px solid #a0b0c0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 2rem auto;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+        }
+        .contact-item {
+            text-align: center;
+        }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+        .glass-card {
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 14px;
+            transition: all 0.3s ease;
+        }
+        body.dark-mode .glass-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+        body.light-mode .glass-card { background: rgba(255,255,255,0.62); border: 1px solid rgba(0,0,0,0.07); }
+        .contact-item {
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        body.dark-mode .contact-item { background: rgba(255,255,255,0.04) !important; border: 1px solid rgba(255,255,255,0.08) !important; color: #e0e0e0 !important; }
+        body.light-mode .contact-item { background: rgba(255,255,255,0.62) !important; border: 1px solid rgba(0,0,0,0.07) !important; color: #111 !important; }
+        .contact-item:hover { border-color: rgba(160,176,192,0.3) !important; }
+        body.dark-mode .bio-box {
+            background: rgba(255,255,255,0.03) !important;
+            border: 1px solid rgba(255,255,255,0.08) !important;
+            backdrop-filter: blur(20px) !important;
+        }
+        body.light-mode .bio-box {
+            background: rgba(255,255,255,0.62) !important;
+            border: 1px solid rgba(0,0,0,0.07) !important;
+            backdrop-filter: blur(20px) !important;
+        }
+        body.dark-mode .news-card {
+            background: rgba(255,255,255,0.03) !important;
+            border: 1px solid rgba(255,255,255,0.07) !important;
+            backdrop-filter: blur(14px) !important;
+        }
+        body.light-mode .news-card {
+            background: rgba(255,255,255,0.65) !important;
+            border: 1px solid rgba(0,0,0,0.07) !important;
+            backdrop-filter: blur(14px) !important;
+        }
+        body.dark-mode hr { border-color: rgba(255,255,255,0.07) !important; }
+        body.light-mode hr { border-color: rgba(0,0,0,0.07) !important; }
+        @media (max-width: 768px) {
+            .contact-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .skills-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.8rem; }
+            .news-grid { grid-template-columns: 1fr !important; gap: 1rem; }
+            .profile { flex-direction: column !important; text-align: center !important; gap: 1.5rem !important; margin: 2rem 0 3rem !important; }
+            h1 { font-size: 2.2rem !important; }
+            .bio-box { max-width: 100% !important; font-size: 1rem !important; }
+            footer { flex-direction: column !important; gap: 1rem !important; text-align: center !important; }
+            .top-controls { top: 0.5rem; left: 0.5rem; right: 0.5rem; }
+            .theme-toggle button, .language-switcher button { padding: 0.4rem 0.8rem !important; font-size: 0.8rem !important; }
+        }
+        @media (max-width: 480px) {
+            .container { padding: 0.8rem; }
+            .contact-grid { grid-template-columns: 1fr !important; }
+            .skills-grid { grid-template-columns: 1fr !important; }
+            h1 { font-size: 1.8rem !important; }
+            .profile-image { width: 100px !important; height: 100px !important; font-size: 2rem !important; }
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes slideDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeInRight { from { opacity:0; transform:translateX(-20px); } to { opacity:1; transform:translateX(0); } }
+        @keyframes fadeInScale { from { opacity:0; transform:scale(0.9); } to { opacity:1; transform:scale(1); } }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+        @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-5px); } }
+        @keyframes shimmer { 0% { transform:translateX(-100%) translateY(-100%) rotate(45deg); } 100% { transform:translateX(100%) translateY(100%) rotate(45deg); } }
+        @keyframes blink { 0%,50% { opacity:1; } 51%,100% { opacity:0; } }
+        @keyframes rotate { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+        @keyframes borderRotate { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+        @keyframes counterRotate { from { transform:rotate(0deg); } to { transform:rotate(-360deg); } }
+        @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const ThemeContext = React.createContext();
+        const ThemeProvider = ({ children }) => {
+            const [theme, setTheme] = useState(() => {
+                const saved = localStorage.getItem('theme');
+                return saved || 'light';
+            });
+            useEffect(() => {
+                document.body.className = theme === 'dark' ? 'dark-mode' : 'light-mode';
+                localStorage.setItem('theme', theme);
+            }, [theme]);
+            const toggleTheme = (newTheme) => setTheme(newTheme);
+            return (
+                <ThemeContext.Provider value={{ theme, toggleTheme }}>
+                    {children}
+                </ThemeContext.Provider>
+            );
         };
-        fetchNews();
-      }, [lang]);
 
-      if (loading) return <div style={{textAlign:'center', padding:'3rem'}}><div className="spinner"/></div>;
+        const ParticleBackground = () => {
+            const canvasRef = useRef(null);
+            const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+            const { theme } = React.useContext(ThemeContext);
+            useEffect(() => {
+                const updateDimensions = () => setDimensions({ width: window.innerWidth, height: window.innerHeight });
+                updateDimensions();
+                window.addEventListener('resize', updateDimensions);
+                return () => window.removeEventListener('resize', updateDimensions);
+            }, []);
+            useEffect(() => {
+                const canvas = canvasRef.current;
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const particles = [];
+                const particleCount = Math.min(50, Math.floor(window.innerWidth / 20));
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push({
+                        x: Math.random() * dimensions.width,
+                        y: Math.random() * dimensions.height,
+                        radius: Math.random() * 2 + 1,
+                        speedX: (Math.random() - 0.5) * 0.3,
+                        speedY: (Math.random() - 0.5) * 0.3,
+                        opacity: Math.random() * 0.3 + 0.1
+                    });
+                }
+                const animate = () => {
+                    ctx.clearRect(0, 0, dimensions.width, dimensions.height);
+                    particles.forEach(p => {
+                        p.x += p.speedX; p.y += p.speedY;
+                        if (p.x < 0 || p.x > dimensions.width) p.speedX *= -1;
+                        if (p.y < 0 || p.y > dimensions.height) p.speedY *= -1;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = theme === 'dark'
+                            ? `rgba(160, 176, 192, ${p.opacity * 0.5})`
+                            : `rgba(120, 140, 160, ${p.opacity * 0.4})`;
+                        ctx.fill();
+                    });
+                    requestAnimationFrame(animate);
+                };
+                animate();
+            }, [dimensions, theme]);
+            return (
+                <canvas ref={canvasRef}
+                    style={{ position:'fixed', top:0, left:0, width:'100%', height:'100%', pointerEvents:'none', zIndex:0, opacity:0.8 }}
+                />
+            );
+        };
 
-      return (
-        <div style={{margin:'4rem 0'}}>
-          <h2 style={{fontSize:'clamp(1.8rem,4vw,2.4rem)', textAlign:'center', marginBottom:'2rem'}}>{txt.title} 🚀</h2>
-          {error && <p style={{color:'#f87171', textAlign:'center'}}>{error}</p>}
-          <div className="news-grid">
-            {articles.map((a,i) => (
-              <div key={i} onClick={()=>window.open(a.link,'_blank')} style={{
-                borderRadius:'16px', overflow:'hidden', background:theme==='dark'?'#1e293b':'#f8fafc',
-                border:`1px solid ${theme==='dark'?'#374151':'#e2e8f0'}`, cursor:'pointer',
-                transition:'transform 0.3s'
-              }}>
-                <img src={a.thumb} alt={a.title} style={{width:'100%', height:'180px', objectFit:'cover'}} 
-                     onError={e=>e.target.src='https://www.nasa.gov/wp-content/themes/nasa/assets/img/nasa-logo.svg'} />
-                <div style={{padding:'1.4rem'}}>
-                  <h3 style={{fontSize:'1.2rem', marginBottom:'0.6rem'}}>{a.title}</h3>
-                  <p style={{fontSize:'0.95rem', opacity:0.85, marginBottom:'1rem'}}>{a.desc}</p>
-                  <div style={{fontSize:'0.85rem', opacity:0.7}}>{a.date} • NASA</div>
+        const TopControls = ({ language, setLanguage, onThemeClick }) => {
+            const { theme } = React.useContext(ThemeContext);
+            const [waves, setWaves] = useState([]);
+            
+            const handleLanguageClick = (lang, e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const newWaves = [];
+                for (let i = 0; i < 3; i++) {
+                    const id = Date.now() + i;
+                    newWaves.push({
+                        id,
+                        x,
+                        y,
+                        delay: i * 0.15,
+                    });
+                }
+                setWaves(prev => [...prev, ...newWaves]);
+                
+                setTimeout(() => {
+                    setWaves(prev => prev.filter(w => !newWaves.some(nw => nw.id === w.id)));
+                }, 800);
+                
+                setLanguage(lang);
+            };
+
+            const handleThemeClick = (newTheme, e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = e.clientX;
+                const y = e.clientY;
+                onThemeClick(newTheme, x, y);
+            };
+
+            return (
+                <div className="top-controls">
+                    <div className="theme-toggle">
+                        <button 
+                            onClick={(e) => handleThemeClick('light', e)} 
+                            className={theme === 'light' ? 'active' : ''}
+                        >
+                            <i className="fas fa-sun" style={{color: theme === 'dark' ? '#ffffff' : '#000000'}}></i>
+                        </button>
+                        <button 
+                            onClick={(e) => handleThemeClick('dark', e)} 
+                            className={theme === 'dark' ? 'active' : ''}
+                        >
+                            <i className="fas fa-moon" style={{color: theme === 'dark' ? '#ffffff' : '#000000'}}></i>
+                        </button>
+                    </div>
+                    <div className="language-switcher">
+                        {['fa', 'en'].map(lang => (
+                            <button key={lang} onClick={(e) => handleLanguageClick(lang, e)}
+                                className={language === lang ? 'active' : ''}
+                                style={{ color: theme === 'dark' ? '#e0e0e0' : '#111', position: 'relative' }}>
+                                <span>{lang === 'fa' ? 'FA' : 'EN'}</span>
+                                {waves.map(wave => (
+                                    <span
+                                        key={wave.id}
+                                        className="wave"
+                                        style={{
+                                            left: wave.x,
+                                            top: wave.y,
+                                            width: '20px',
+                                            height: '20px',
+                                            animationDelay: `${wave.delay}s`,
+                                        }}
+                                    />
+                                ))}
+                            </button>
+                        ))}
+                    </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
+            );
+        };
 
-    function App() {
-      const [lang, setLang] = useState('fa');
-      const { theme } = useContext(ThemeContext);
+       
+        const LiquidEffect = ({ active, x, y }) => {
+            return (
+                <div className="liquid-effect" style={{ pointerEvents: 'none' }}>
+                    <div
+                        className={`liquid-circle ${active ? 'active' : ''}`}
+                        style={{
+                            left: x,
+                            top: y,
+                            width: active ? '250vmax' : 0,
+                            height: active ? '250vmax' : 0,
+                        }}
+                    />
+                </div>
+            );
+        };
 
-      const t = {
-        fa: { title:'توسعه‌دهنده فول‌استک', phone:'تلفن', telegram:'تلگرام', bale:'بله', email:'ایمیل', x:'ایکس', discord:'دیسکورد', skills:'تخصص‌ها' },
-        en: { title:'Fullstack Developer', phone:'Phone', telegram:'Telegram', bale:'Bale', email:'Email', x:'X', discord:'Discord', skills:'Skills' }
-      }[lang] || {
-        title:'توسعه‌دهنده فول‌استک',
-        phone:'تلفن',
-        telegram:'تلگرام',
-        bale:'بله',
-        email:'ایمیل',
-        x:'ایکس',
-        discord:'دیسکورد',
-        skills:'تخصص‌ها'
-      };
+        const ProfileImage = () => {
+            const [tilt, setTilt] = useState({ x: 0, y: 0 });
+            const [rotation, setRotation] = useState(0);
+            const imageRef = useRef(null);
+            const animationRef = useRef(null);
+            const { theme } = React.useContext(ThemeContext);
+            const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+            const [imageError, setImageError] = useState(false);
+            
+            const profileImageUrl = "https://s6.uupload.ir/files/avatar_4eom.jpeg";
 
-      const skills = ['HTML','CSS','JavaScript','React','Node.js','PHP','Docker','MySQL','Git','Tailwind'];
+            useEffect(() => {
+                const handleResize = () => setIsMobile(window.innerWidth <= 768);
+                window.addEventListener('resize', handleResize);
+                return () => window.removeEventListener('resize', handleResize);
+            }, []);
+            
+            useEffect(() => {
+                const animate = () => {
+                    setRotation(prev => (prev + 0.1) % 360);
+                    animationRef.current = requestAnimationFrame(animate);
+                };
+                if (!tilt.x && !tilt.y && !isMobile) {
+                    animationRef.current = requestAnimationFrame(animate);
+                } else { 
+                    if (animationRef.current) cancelAnimationFrame(animationRef.current); 
+                }
+                return () => {
+                    if (animationRef.current) cancelAnimationFrame(animationRef.current);
+                };
+            }, [tilt, isMobile]);
 
-      return (
-        <>
-          <ParticleBackground />
-          <TopControls lang={lang} setLang={setLang} />
+            const handleMouseMove = (e) => {
+                if (isMobile) return;
+                const rect = imageRef.current.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                setTilt({ x: x * 20, y: y * 20 });
+            };
 
-          <main className="container">
-            <div className="profile">
-              <ProfileAvatar />
-              <div>
-                <h1 style={{fontSize:'clamp(3rem,8vw,5rem)', marginBottom:'0.4rem'}}>Matin481</h1>
-                <p style={{fontSize:'1.5rem', opacity:0.9}}>{t.title}</p>
-              </div>
-            </div>
+            const baseStyle = {
+                width: isMobile ? '100px' : '140px',
+                height: isMobile ? '100px' : '140px',
+                borderRadius: '50%',
+                background: theme === 'dark'
+                    ? 'linear-gradient(135deg, rgba(160,176,192,0.12) 0%, rgba(20,25,30,0.85) 100%)'
+                    : 'linear-gradient(135deg, rgba(160,176,192,0.1) 0%, rgba(238,243,248,0.9) 100%)',
+                backdropFilter: 'blur(10px)',
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                fontSize: isMobile ? '2rem' : '2.8rem', 
+                fontWeight: '700',
+                color: theme === 'dark' ? '#e0e0e0' : '#111',
+                border: '1.5px solid rgba(160,176,192,0.25)',
+                transition: 'transform 0.1s ease',
+                transform: isMobile ? 'none' : `perspective(1000px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg) scale(1.05) rotate(${rotation}deg)`,
+                boxShadow: '0 0 24px rgba(160,176,192,0.08), 0 20px 40px -20px rgba(0,0,0,0.45)',
+                position: 'relative', 
+                overflow: 'hidden',
+                cursor: isMobile ? 'default' : 'pointer',
+                animation: isMobile ? 'none' : 'float 6s ease-in-out infinite'
+            };
 
-            <CustomBio lang={lang} />
+            if (!imageError) {
+                return (
+                    <div ref={imageRef} onMouseMove={handleMouseMove} onMouseLeave={() => setTilt({ x: 0, y: 0 })} style={baseStyle}>
+                        <img 
+                            src={profileImageUrl} 
+                            alt="Matin481" 
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+                            onError={() => setImageError(true)}
+                        />
+                        <div style={{
+                            position: 'absolute', top: '-50%', left: '-50%',
+                            width: '200%', height: '200%',
+                            background: 'linear-gradient(45deg, transparent 30%, rgba(160,176,192,0.08) 50%, transparent 70%)',
+                            animation: isMobile ? 'none' : 'shimmer 3s infinite',
+                            pointerEvents: 'none'
+                        }} />
+                        <div style={{
+                            position: 'absolute', inset: '-2px', borderRadius: '50%',
+                            background: 'conic-gradient(from 0deg, transparent, rgba(160,176,192,0.35), transparent)',
+                            animation: isMobile ? 'none' : 'borderRotate 4s linear infinite', 
+                            zIndex: -1
+                        }} />
+                    </div>
+                );
+            }
 
-            <NASANews lang={lang} />
+            return (
+                <div ref={imageRef} onMouseMove={handleMouseMove} onMouseLeave={() => setTilt({ x: 0, y: 0 })} style={baseStyle}>
+                    <span style={{
+                        animation: isMobile ? 'none' : 'counterRotate 6s linear infinite',
+                        display: 'inline-block',
+                        transform: isMobile ? 'none' : `rotate(-${rotation}deg)`
+                    }}>MN</span>
+                    <div style={{
+                        position: 'absolute', top: '-50%', left: '-50%',
+                        width: '200%', height: '200%',
+                        background: 'linear-gradient(45deg, transparent 30%, rgba(160,176,192,0.08) 50%, transparent 70%)',
+                        animation: isMobile ? 'none' : 'shimmer 3s infinite'
+                    }} />
+                    <div style={{
+                        position: 'absolute', inset: '-2px', borderRadius: '50%',
+                        background: 'conic-gradient(from 0deg, transparent, rgba(160,176,192,0.35), transparent)',
+                        animation: isMobile ? 'none' : 'borderRotate 4s linear infinite', zIndex: -1
+                    }} />
+                </div>
+            );
+        };
 
-            <div className="contact-grid">
-              <ContactItem icon="fas fa-phone" label={t.phone} value="09108704869" href="tel:09108704869" delay={0.1} />
-              <ContactItem icon="fab fa-telegram" label={t.telegram} value={<span className="username-with-at">@Matin481</span>} href="https://t.me/Matin481" delay={0.2} />
-              <ContactItem 
-                imgSrc="https://wintheme.ir/wp-content/uploads/2023/10/bale-black-min-150x150.jpg"
-                label={t.bale} value={<span className="username-with-at">@matin481</span>} href="https://ble.ir/matin481" delay={0.3} 
-              />
-              <ContactItem icon="far fa-envelope" label={t.email} value="m92755452@gmail.com" href="mailto:m92755452@gmail.com" delay={0.4} />
-              <ContactItem icon="fab fa-x-twitter" label={t.x} value={<span className="username-with-at">@Matin4810</span>} href="https://x.com/Matin4810" delay={0.5} />
-              <ContactItem icon="fab fa-discord" label={t.discord} value="_matin481" delay={0.6} />
-            </div>
+        const CustomBio = ({ lang }) => {
+            const [displayText, setDisplayText] = useState('');
+            const [isTyping, setIsTyping] = useState(true);
+            const [showFormula, setShowFormula] = useState(false);
+            const { theme } = React.useContext(ThemeContext);
 
-            <h2 style={{fontSize:'clamp(1.8rem,4vw,2.4rem)', margin:'4rem 0 1.8rem', textAlign:'center'}}>{t.skills}</h2>
-            <div className="skills-grid">
-              {skills.map((s,i) => <SkillItem key={s} name={s} i={i} />)}
-            </div>
+            const fullText = 'توسعه‌دهنده وب‌سایت و برنامه‌نویس در حوزه وب و همچنین علاقه‌مند به مطالب منطقی و علمی';
 
-            <footer style={{textAlign:'center', padding:'4rem 0 2rem', opacity:0.6, fontSize:'0.95rem'}}>
-              © 2026 Matin481 • v2.9
-            </footer>
-          </main>
-        </>
-      );
-    }
+            useEffect(() => {
+                setDisplayText('');
+                setIsTyping(true);
+                setShowFormula(false);
+                let index = 0;
+                const interval = setInterval(() => {
+                    if (index <= fullText.length) {
+                        setDisplayText(fullText.substring(0, index));
+                        index++;
+                    } else {
+                        clearInterval(interval);
+                        setIsTyping(false);
+                        setTimeout(() => setShowFormula(true), 500);
+                    }
+                }, 60);
+                return () => clearInterval(interval);
+            }, [lang]);
 
-    ReactDOM.createRoot(document.getElementById('root')).render(
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
-    );
-  </script>
+            return (
+                <div style={{ margin: '2rem 0', position: 'relative' }}>
+                    <div className="bio-box" style={{
+                        maxWidth: '100%',
+                        fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+                        color: theme === 'dark' ? '#d0d0d0' : '#444',
+                        lineHeight: '1.7', position: 'relative',
+                        padding: '1.5rem', borderRadius: '16px',
+                        boxShadow: theme === 'dark'
+                            ? '0 10px 30px -15px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04)'
+                            : '0 10px 30px -15px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8)'
+                    }}>
+                        {displayText}
+                        {isTyping && (
+                            <span style={{
+                                display: 'inline-block', width: '3px', height: '1.4rem',
+                                background: '#000000',
+                                marginRight: '4px', animation: 'blink 0.8s infinite', verticalAlign: 'middle',
+                                boxShadow: '0 0 4px rgba(0,0,0,0.4)'
+                            }} />
+                        )}
+                        {showFormula && (
+                            <div style={{
+                                marginTop: '1rem', padding: '1rem',
+                                background: theme === 'dark' ? 'rgba(0,0,0,0.06)' : 'rgba(0,0,0,0.03)',
+                                borderRadius: '8px', fontFamily: 'monospace', fontSize: '0.9rem',
+                                color: theme === 'dark' ? '#a0a0a0' : '#666',
+                                border: theme === 'dark' ? '1px dashed rgba(0,0,0,0.25)' : '1px dashed #ccc',
+                                animation: 'slideUp 0.5s ease-out', direction: 'ltr', textAlign: 'left'
+                            }}>
+                                {lang === 'fa' ? <span>دین = جهل</span> : <span>religion = ignorance</span>}
+                            </div>
+                        )}
+                    </div>
+                    <div style={{
+                        position: 'absolute', top: '-10px', right: '-10px',
+                        width: 'clamp(30px,5vw,50px)', height: 'clamp(30px,5vw,50px)',
+                        borderTop: '1.5px solid #000000',
+                        borderRight: '1.5px solid #000000',
+                        opacity: 0.5, animation: 'rotate 10s linear infinite'
+                    }} />
+                    <div style={{
+                        position: 'absolute', bottom: '-10px', left: '-10px',
+                        width: 'clamp(30px,5vw,50px)', height: 'clamp(30px,5vw,50px)',
+                        borderBottom: '1.5px solid #000000',
+                        borderLeft: '1.5px solid #000000',
+                        opacity: 0.5, animation: 'rotate 10s linear infinite reverse'
+                    }} />
+                </div>
+            );
+        };
+
+        const ContactItem = ({ icon, label, value, href, delay, imgSrc }) => {
+            const [hover, setHover] = useState(false);
+            const { theme } = React.useContext(ThemeContext);
+            const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+            const [imgError, setImgError] = useState(false);
+            const iconColor = theme === 'dark' ? '#ffffff' : '#000000';
+
+            return (
+                <div className="contact-item"
+                    onMouseEnter={() => !isMobile && setHover(true)}
+                    onMouseLeave={() => setHover(false)}
+                    style={{
+                        background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.62)',
+                        padding: isMobile ? '1.2rem 1rem' : '1.8rem 1.5rem',
+                        transition: 'all 0.3s ease',
+                        position: 'relative', overflow: 'hidden',
+                        transform: hover && !isMobile ? 'translateY(-5px)' : 'translateY(0)',
+                        boxShadow: hover && !isMobile
+                            ? '0 16px 40px rgba(0,0,0,0.22), 0 0 14px rgba(0,0,0,0.1)'
+                            : '0 4px 16px rgba(0,0,0,0.08)',
+                        animation: `fadeInScale 0.5s ease-out ${delay}s both`,
+                        borderBottom: hover && !isMobile
+                            ? '2px solid #000000'
+                            : '2px solid transparent',
+                        cursor: 'pointer',
+                        textAlign: 'center'
+                    }}>
+                    {imgSrc && !imgError ? (
+                        <img src={imgSrc} alt={label} style={{
+                            width: isMobile ? '28px' : '36px',
+                            height: isMobile ? '28px' : '36px',
+                            marginBottom: isMobile ? '0.5rem' : '1rem',
+                            objectFit: 'contain'
+                        }} onError={() => setImgError(true)} />
+                    ) : (
+                        <i className={icon} style={{
+                            fontSize: isMobile ? '1.2rem' : '1.4rem',
+                            color: iconColor,
+                            marginBottom: isMobile ? '0.5rem' : '1rem',
+                            transition: 'transform 0.3s ease', display: 'inline-block'
+                        }} />
+                    )}
+                    <div style={{
+                        fontSize: '0.7rem', textTransform: 'uppercase',
+                        color: theme === 'dark' ? 'rgba(224,224,224,0.45)' : '#888',
+                        letterSpacing: '1px', marginBottom: '0.3rem', fontWeight: '500'
+                    }}>{label}</div>
+                    <div style={{
+                        color: theme === 'dark' ? '#e0e0e0' : '#111',
+                        fontWeight: '600',
+                        fontSize: '1rem',
+                        wordBreak: 'break-word'
+                    }}>
+                        {href ? (
+                            <a href={href} target="_blank" rel="noopener noreferrer"
+                                style={{ color: 'inherit', textDecoration: 'none' }}>
+                                {value}
+                            </a>
+                        ) : value}
+                    </div>
+                </div>
+            );
+        };
+
+        const SkillItem = ({ name, index }) => {
+            const [hover, setHover] = useState(false);
+            const { theme } = React.useContext(ThemeContext);
+            const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+            return (
+                <div onMouseEnter={() => !isMobile && setHover(true)}
+                    onMouseLeave={() => setHover(false)}
+                    style={{
+                        background: hover && !isMobile
+                            ? 'rgba(0,0,0,0.08)'
+                            : (theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.62)'),
+                        backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
+                        padding: isMobile ? '0.8rem' : '0.9rem 1.2rem',
+                        fontSize: isMobile ? '0.9rem' : '1rem',
+                        fontWeight: hover && !isMobile ? '600' : '400',
+                        color: hover && !isMobile
+                            ? (theme === 'dark' ? '#ffffff' : '#000000')
+                            : (theme === 'dark' ? '#e0e0e0' : '#111'),
+                        border: hover && !isMobile
+                            ? '1px solid #000000'
+                            : (theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.07)'),
+                        borderRadius: '10px', transition: 'all 0.3s ease', textAlign: 'center',
+                        transform: hover && !isMobile ? 'translateY(-3px)' : 'none',
+                        boxShadow: hover && !isMobile ? '0 8px 20px rgba(0,0,0,0.14), 0 0 10px rgba(0,0,0,0.08)' : 'none',
+                        animation: `fadeInScale 0.4s ease-out ${index * 0.03}s both`
+                    }}>
+                    {name}
+                </div>
+            );
+        };
+
+        const NASANews = ({ language }) => {
+            const [articles, setArticles] = useState([]);
+            const [loading, setLoading] = useState(true);
+            const [error, setError] = useState(null);
+            const { theme } = React.useContext(ThemeContext);
+            const texts = {
+                fa: { title: '🚀 مقالات جدید ناسا', subtitle: 'آخرین مقالات و اخبار علمی ناسا', loading: 'در حال دریافت مقالات...', error: 'خطا در دریافت مقالات', readMore: 'مطالعه مقاله', source: 'منبع', date: 'تاریخ انتشار' },
+                en: { title: '🚀 Latest NASA Articles', subtitle: 'Recent NASA news and scientific articles', loading: 'Loading articles...', error: 'Error loading articles', readMore: 'Read article', source: 'Source', date: 'Published' }
+            };
+            const t = texts[language];
+            useEffect(() => {
+                const fetchNASAArticles = async () => {
+                    try {
+                        setLoading(true);
+                        const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.nasa.gov/rss/dyn/breaking_news.rss');
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        const data = await response.json();
+                        if (data.items && data.items.length > 0) {
+                            setArticles(data.items.slice(0, 6).map(item => ({
+                                title: item.title,
+                                description: item.description.replace(/<[^>]*>/g, '').substring(0, 120) + '...',
+                                date: item.pubDate, url: item.link, source: "NASA Breaking News",
+                                thumbnail: item.thumbnail || 'https://www.nasa.gov/sites/default/files/thumbnails/image/nasa-logo-web-rgb.png'
+                            })));
+                        } else { setError('No articles available'); }
+                    } catch (err) {
+                        console.error('Error fetching NASA articles:', err);
+                        setError(err.message);
+                        setArticles([
+                            { title: "NASA's James Webb Telescope Discovers New Galaxy", description: "The James Webb Space Telescope has made another groundbreaking discovery, finding a galaxy that existed just 300 million years after the Big Bang.", date: new Date().toISOString(), url: "https://www.nasa.gov", source: "NASA News", thumbnail: "https://www.nasa.gov/sites/default/files/thumbnails/image/webb-first-images-release.jpg" },
+                            { title: "Artemis II Mission Update", description: "NASA announces new timeline for Artemis II mission, the first crewed mission to the Moon since 1972.", date: new Date().toISOString(), url: "https://www.nasa.gov", source: "NASA News", thumbnail: "https://www.nasa.gov/sites/default/files/thumbnails/image/artemis_ii_astronauts.jpg" }
+                        ]);
+                    } finally { setLoading(false); }
+                };
+                fetchNASAArticles();
+            }, []);
+            const formatDate = (dateString) => {
+                const date = new Date(dateString);
+                return language === 'fa'
+                    ? date.toLocaleDateString('fa-IR')
+                    : date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            };
+            const openArticle = (url) => window.open(url, '_blank');
+            const wrapStyle = {
+                margin: '2rem 0', padding: '1.5rem', borderRadius: '20px',
+                backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+                background: theme === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.55)',
+                border: theme === 'dark' ? '1px solid rgba(255,255,255,0.07)' : '1px solid rgba(0,0,0,0.07)'
+            };
+            if (loading) return (
+                <div style={{ ...wrapStyle, textAlign: 'center' }}>
+                    <div className="spinner"></div>
+                    <p style={{ color: theme === 'dark' ? '#a0a0a0' : '#666', marginTop: '1rem' }}>{t.loading}</p>
+                </div>
+            );
+            return (
+                <div style={wrapStyle}>
+                    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'1.5rem', flexWrap:'wrap', gap:'1rem' }}>
+                        <div>
+                            <h2 style={{ fontSize:'clamp(1.5rem,4vw,2rem)', fontWeight:'600', color: theme === 'dark' ? '#e0e0e0' : '#111' }}>{t.title}</h2>
+                            <p style={{ fontSize:'0.9rem', color: theme === 'dark' ? 'rgba(224,224,224,0.5)' : '#666' }}>{t.subtitle}</p>
+                        </div>
+                        <span style={{
+                            fontSize:'0.8rem', color: theme === 'dark' ? 'rgba(224,224,224,0.5)' : '#666',
+                            background: theme === 'dark' ? 'rgba(0,0,0,0.08)' : 'rgba(0,0,0,0.08)',
+                            border: '1px solid rgba(0,0,0,0.18)',
+                            padding:'0.3rem 1rem', borderRadius:'50px'
+                        }}>
+                            <i className="fas fa-newspaper" style={{ marginRight:'0.3rem', color: theme === 'dark' ? '#ffffff' : '#000000' }} />NASA.gov
+                        </span>
+                    </div>
+                    {error && (
+                        <div style={{ padding:'1rem', background:'rgba(200,80,80,0.08)', color:'#ff9999', border:'1px solid rgba(200,80,80,0.18)', borderRadius:'10px', marginBottom:'1.5rem' }}>
+                            <i className="fas fa-exclamation-triangle" style={{ marginRight:'0.5rem', color: theme === 'dark' ? '#ffffff' : '#000000' }} />{error}
+                        </div>
+                    )}
+                    <div className="news-grid">
+                        {articles.map((item, index) => (
+                            <div key={index} className="news-card" onClick={() => openArticle(item.url)}
+                                style={{ borderRadius:'12px', overflow:'hidden', cursor:'pointer', transition:'transform 0.2s ease, box-shadow 0.2s ease' }}
+                                onMouseEnter={e => { e.currentTarget.style.transform='translateY(-4px)'; e.currentTarget.style.boxShadow='0 16px 40px rgba(0,0,0,0.22), 0 0 12px rgba(0,0,0,0.1)'; }}
+                                onMouseLeave={e => { e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow='none'; }}>
+                                <div style={{ height:'160px', overflow:'hidden', position:'relative' }}>
+                                    <img src={item.thumbnail} alt={item.title}
+                                        style={{ width:'100%', height:'100%', objectFit:'cover', filter:'brightness(0.9)' }}
+                                        onError={e => e.target.src='https://www.nasa.gov/sites/default/files/thumbnails/image/nasa-logo-web-rgb.png'} />
+                                    <div style={{ position:'absolute', inset:0, background:'linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.6))' }} />
+                                    <div style={{ position:'absolute', top:'10px', right:'10px', background:'rgba(0,0,0,0.6)', backdropFilter:'blur(8px)', border:'1px solid rgba(0,0,0,0.18)', color:'#e0e0e0', padding:'0.2rem 0.6rem', borderRadius:'50px', fontSize:'0.7rem' }}>
+                                        <i className="far fa-calendar" style={{ marginRight:'0.3rem', color: theme === 'dark' ? '#ffffff' : '#000000' }} />{formatDate(item.date)}
+                                    </div>
+                                </div>
+                                <div style={{ padding:'1rem' }}>
+                                    <h3 style={{ fontSize:'1.1rem', fontWeight:'600', marginBottom:'0.5rem', color: theme === 'dark' ? '#e0e0e0' : '#111' }}>{item.title}</h3>
+                                    <p style={{ fontSize:'0.9rem', color: theme === 'dark' ? 'rgba(224,224,224,0.6)' : '#666', marginBottom:'1rem' }}>{item.description}</p>
+                                    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', borderTop: theme === 'dark' ? '1px solid rgba(255,255,255,0.07)' : '1px solid rgba(0,0,0,0.07)', paddingTop:'0.8rem' }}>
+                                        <span style={{ fontSize:'0.8rem', color: theme === 'dark' ? 'rgba(224,224,224,0.45)' : '#999' }}>
+                                            <i className="fas fa-user-astronaut" style={{ marginRight:'0.3rem', color: theme === 'dark' ? '#ffffff' : '#000000' }} />NASA
+                                        </span>
+                                        <span style={{ color: theme === 'dark' ? '#ffffff' : '#000000', fontSize:'0.9rem', fontWeight:'500' }}>{t.readMore} →</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [language, setLanguage] = useState('fa');
+            const [showContent, setShowContent] = useState(false);
+            const { theme, toggleTheme } = React.useContext(ThemeContext);
+            
+            
+            const [liquid, setLiquid] = useState({ active: false, x: 0, y: 0, targetTheme: null });
+
+            useEffect(() => {
+                document.body.dir = language === 'fa' ? 'rtl' : 'ltr';
+                setShowContent(true);
+            }, [language]);
+
+            const handleThemeClick = (newTheme, x, y) => {
+                setLiquid({ active: true, x, y, targetTheme: newTheme });
+              
+                setTimeout(() => {
+                    toggleTheme(newTheme);
+                    setLiquid(prev => ({ ...prev, active: false }));
+                }, 500);
+            };
+
+            const content = {
+                fa: { title: 'توسعه‌دهنده فول‌استک', phone: 'تلفن', telegram: 'تلگرام', bale: 'بله', x: 'اکس (توییتر)', email: 'ایمیل', discord: 'دیسکورد', skills: 'تخصص‌ها' },
+                en: { title: 'Fullstack Developer', phone: 'PHONE', telegram: 'TELEGRAM', bale: 'Bale', x: 'X (TWITTER)', email: 'EMAIL', discord: 'DISCORD', skills: 'Skills' }
+            };
+            const skills = ['HTML', 'CSS', 'JavaScript', 'Node.js', 'React.js', 'PHP', 'Docker', 'MySQL'];
+
+            return (
+                <div style={{ opacity: showContent ? 1 : 0, transition: 'opacity 0.5s ease', position: 'relative', zIndex: 1, minHeight: '100vh', width: '100%' }}>
+                    <ParticleBackground />
+                    <TopControls language={language} setLanguage={setLanguage} onThemeClick={handleThemeClick} />
+                    <LiquidEffect active={liquid.active} x={liquid.x} y={liquid.y} />
+                    <main className="container">
+                        <div className="profile" style={{ display:'flex', alignItems:'center', gap:'clamp(1.5rem,4vw,3rem)', margin:'clamp(2rem,5vw,4rem) 0', animation:'fadeInUp 0.6s ease-out' }}>
+                            <ProfileImage />
+                            <div>
+                                <h1 style={{ fontSize:'clamp(2rem,5vw,3rem)', fontWeight:'700', marginBottom:'0.5rem', color: theme === 'dark' ? '#e0e0e0' : '#111' }}>
+                                    Matin481
+                                </h1>
+                                <div style={{ fontSize:'clamp(1rem,2.5vw,1.3rem)', color: theme === 'dark' ? 'rgba(192,208,224,0.8)' : '#000000' }}>
+                                    {content[language].title}
+                                </div>
+                            </div>
+                        </div>
+                        <CustomBio lang={language} />
+                        <NASANews language={language} />
+                        <div className="contact-grid">
+                            {}
+                            <ContactItem 
+                                imgSrc="https://img.icons8.com/?size=100&id=jShwZ2RCyPSO&format=png&color=000000"
+                                icon="fas fa-phone"
+                                label={content[language].phone} 
+                                value="09108704869" 
+                                href="tel:09108704869" 
+                                delay="0.5" 
+                            />
+                            {}
+                            <ContactItem 
+                                imgSrc="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg"
+                                icon="fab fa-telegram"
+                                label={content[language].telegram} 
+                                value="@Matin481" 
+                                href="https://t.me/Matin481" 
+                                delay="0.6" 
+                            />
+                            {}
+                            <ContactItem 
+                                imgSrc="https://upload.wikimedia.org/wikipedia/commons/f/fd/Cropped-bale-logo-flat-270x270.png"
+                                icon="fas fa-comment"
+                                label={content[language].bale} 
+                                value="@matin481" 
+                                href="https://ble.ir/matin481" 
+                                delay="0.62" 
+                            />
+                            {}
+                            <ContactItem 
+                                imgSrc="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg"
+                                icon="far fa-envelope"
+                                label={content[language].email} 
+                                value="m92755452@gmail.com" 
+                                href="mailto:m92755452@gmail.com" 
+                                delay="0.7" 
+                            />
+                            {}
+                            <ContactItem 
+                                imgSrc="https://upload.wikimedia.org/wikipedia/commons/c/ce/X_logo_2023.svg"
+                                icon="fab fa-x-twitter"
+                                label={content[language].x} 
+                                value="@Matin4810" 
+                                href="https://x.com/Matin4810" 
+                                delay="0.65" 
+                            />
+                            {}
+                            <ContactItem 
+                                imgSrc="https://img.icons8.com/?size=100&id=M725CLW4L7wE&format=png&color=000000"
+                                icon="fab fa-discord"
+                                label={content[language].discord} 
+                                value="_matin481" 
+                                delay="0.8" 
+                            />
+                        </div>
+                        <h2 style={{ fontSize:'clamp(1.5rem,4vw,1.8rem)', fontWeight:'600', marginBottom:'1.5rem', color: theme === 'dark' ? '#e0e0e0' : '#111' }}>
+                            {content[language].skills}
+                        </h2>
+                        <div className="skills-grid">
+                            {skills.map((skill, index) => <SkillItem key={skill} name={skill} index={index} />)}
+                        </div>
+                        <hr style={{ border:'none', borderTop: theme === 'dark' ? '1px solid rgba(255,255,255,0.07)' : '1px solid rgba(0,0,0,0.07)', margin:'2rem 0' }} />
+                        <footer style={{ display:'flex', justifyContent:'space-between', alignItems:'center', color: theme === 'dark' ? 'rgba(224,224,224,0.4)' : '#000000', fontSize:'0.9rem', flexWrap:'wrap', gap:'1rem' }}>
+                            <div>
+                                <span>© 2025 Matin481</span>
+                                <span style={{ margin:'0 0.5rem' }}>•</span>
+                                <span>v2.0.1</span>
+                            </div>
+                            <div style={{ display:'flex', gap:'1rem' }}>
+                                {[
+                                    { icon:'fa-github', href:'https://github.com/Matin481' },
+                                    { icon:'fa-linkedin-in', href:'https://linkedin.com/in/matin481' },
+                                    { icon:'fa-x-twitter', href:'https://x.com/Matin4810' }
+                                ].map(s => (
+                                    <a key={s.icon} href={s.href} target="_blank" rel="noopener noreferrer"
+                                        style={{ color: theme === 'dark' ? '#ffffff' : '#000000', fontSize:'1.2rem', transition:'all 0.2s ease' }}
+                                        onMouseEnter={e => { e.currentTarget.style.color='#ffffff'; }}
+                                        onMouseLeave={e => { e.currentTarget.style.color= theme === 'dark' ? '#ffffff' : '#000000'; }}>
+                                        <i className={`fab ${s.icon}`}></i>
+                                    </a>
+                                ))}
+                            </div>
+                        </footer>
+                    </main>
+                </div>
+            );
+        };
+        const RootApp = () => (
+            <ThemeProvider><App /></ThemeProvider>
+        );
+        ReactDOM.createRoot(document.getElementById('root')).render(<RootApp />);
+    </script>
 </body>
 </html>
