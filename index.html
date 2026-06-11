@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Matin481</title>
-   
+   <meta name="google-site-verification" content="mtaBq8Ov4ChOa4cw9KqpLO8439xoJHHVMmv43gS_uFs" />
     <meta name="description" content="Matin481. Fullstack developer specializing in React, Node.js, and modern web technologies. Space enthusiast and NASA news follower.">
     <meta name="keywords" content="Matin481, React Developer, Fullstack Developer, JavaScript, Node.js, Web Development, NASA, Space News">
     <meta name="author" content="Matin481">
@@ -605,7 +605,7 @@
                                 border: theme === 'dark' ? '1px dashed rgba(0,0,0,0.25)' : '1px dashed #ccc',
                                 animation: 'slideUp 0.5s ease-out', direction: 'ltr', textAlign: 'left'
                             }}>
-                                {lang === 'fa' ? <span>دین = جهل</span> : <span>religion = ignorance</span>}
+                                {lang === 'fa' ? <span>سعی کن تلگرام پیام بدی :) </span> : <span>Try sending a telegram message :) </span>}
                             </div>
                         )}
                     </div>
@@ -728,8 +728,8 @@
             const [error, setError] = useState(null);
             const { theme } = React.useContext(ThemeContext);
             const texts = {
-                fa: { title: '🚀 مقالات جدید ناسا', subtitle: 'آخرین مقالات و اخبار علمی ناسا', loading: 'در حال دریافت مقالات...', error: 'خطا در دریافت مقالات', readMore: 'مطالعه مقاله', source: 'منبع', date: 'تاریخ انتشار' },
-                en: { title: '🚀 Latest NASA Articles', subtitle: 'Recent NASA news and scientific articles', loading: 'Loading articles...', error: 'Error loading articles', readMore: 'Read article', source: 'Source', date: 'Published' }
+                fa: { title: ' مقالات جدید ناسا', subtitle: 'آخرین مقالات و اخبار علمی ناسا', loading: 'در حال دریافت مقالات...', error: 'خطا در دریافت مقالات', readMore: 'مطالعه مقاله', source: 'منبع', date: 'تاریخ انتشار' },
+                en: { title: ' Latest NASA Articles', subtitle: 'Recent NASA news and scientific articles', loading: 'Loading articles...', error: 'Error loading articles', readMore: 'Read article', source: 'Source', date: 'Published' }
             };
             const t = texts[language];
             useEffect(() => {
@@ -790,12 +790,12 @@
                             border: '1px solid rgba(0,0,0,0.18)',
                             padding:'0.3rem 1rem', borderRadius:'50px'
                         }}>
-                            <i className="fas fa-newspaper" style={{ marginRight:'0.3rem', color: theme === 'dark' ? '#ffffff' : '#000000' }} />NASA.gov
+                            <i className="" style={{ marginRight:'0.3rem', color: theme === 'dark' ? '#ffffff' : '#000000' }} />NASA.gov
                         </span>
                     </div>
                     {error && (
                         <div style={{ padding:'1rem', background:'rgba(200,80,80,0.08)', color:'#ff9999', border:'1px solid rgba(200,80,80,0.18)', borderRadius:'10px', marginBottom:'1.5rem' }}>
-                            <i className="fas fa-exclamation-triangle" style={{ marginRight:'0.5rem', color: theme === 'dark' ? '#ffffff' : '#000000' }} />{error}
+                            <i className="" style={{ marginRight:'0.5rem', color: theme === 'dark' ? '#ffffff' : '#000000' }} />{error}
                         </div>
                     )}
                     <div className="news-grid">
@@ -810,7 +810,7 @@
                                         onError={e => e.target.src='https://www.nasa.gov/sites/default/files/thumbnails/image/nasa-logo-web-rgb.png'} />
                                     <div style={{ position:'absolute', inset:0, background:'linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.6))' }} />
                                     <div style={{ position:'absolute', top:'10px', right:'10px', background:'rgba(0,0,0,0.6)', backdropFilter:'blur(8px)', border:'1px solid rgba(0,0,0,0.18)', color:'#e0e0e0', padding:'0.2rem 0.6rem', borderRadius:'50px', fontSize:'0.7rem' }}>
-                                        <i className="far fa-calendar" style={{ marginRight:'0.3rem', color: theme === 'dark' ? '#ffffff' : '#000000' }} />{formatDate(item.date)}
+                                        <i className="" style={{ marginRight:'0.3rem', color: theme === 'dark' ? '#ffffff' : '#000000' }} />{formatDate(item.date)}
                                     </div>
                                 </div>
                                 <div style={{ padding:'1rem' }}>
@@ -818,7 +818,7 @@
                                     <p style={{ fontSize:'0.9rem', color: theme === 'dark' ? 'rgba(224,224,224,0.6)' : '#666', marginBottom:'1rem' }}>{item.description}</p>
                                     <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', borderTop: theme === 'dark' ? '1px solid rgba(255,255,255,0.07)' : '1px solid rgba(0,0,0,0.07)', paddingTop:'0.8rem' }}>
                                         <span style={{ fontSize:'0.8rem', color: theme === 'dark' ? 'rgba(224,224,224,0.45)' : '#999' }}>
-                                            <i className="fas fa-user-astronaut" style={{ marginRight:'0.3rem', color: theme === 'dark' ? '#ffffff' : '#000000' }} />NASA
+                                            <i className="" style={{ marginRight:'0.3rem', color: theme === 'dark' ? '#ffffff' : '#000000' }} />NASA
                                         </span>
                                         <span style={{ color: theme === 'dark' ? '#ffffff' : '#000000', fontSize:'0.9rem', fontWeight:'500' }}>{t.readMore} →</span>
                                     </div>
